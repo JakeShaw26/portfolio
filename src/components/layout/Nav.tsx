@@ -1,4 +1,5 @@
 import { site, nav } from "@/lib/content/site";
+import { Magnetic } from "@/components/motion/Magnetic";
 
 export function Nav() {
   return (
@@ -18,12 +19,14 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <a
-          href="#contact"
-          className="font-mono text-xs text-accent uppercase transition-opacity hover:opacity-70"
-        >
-          Say hi →
-        </a>
+        <Magnetic>
+          <a
+            href="#contact"
+            className="font-mono text-xs text-accent uppercase transition-opacity hover:opacity-70"
+          >
+            Say hi →
+          </a>
+        </Magnetic>
       </div>
     </header>
   );

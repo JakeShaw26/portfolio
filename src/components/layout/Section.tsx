@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 
 type SectionProps = {
   id?: string;
@@ -14,11 +15,11 @@ export function Section({ id, index, label, children }: SectionProps) {
       id={id}
       className="scroll-mt-16 border-t border-hairline px-6 py-24 sm:px-10 sm:py-32 lg:px-16"
     >
-      <div className="mb-12 flex items-center gap-3 font-mono text-label text-muted uppercase">
+      <Reveal className="mb-12 flex items-center gap-3 font-mono text-label text-muted uppercase">
         <span className="text-accent">{index}</span>
         <span>/ {label}</span>
-      </div>
-      {children}
+      </Reveal>
+      <Reveal delay={0.08}>{children}</Reveal>
     </section>
   );
 }

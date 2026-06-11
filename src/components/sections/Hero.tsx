@@ -1,4 +1,5 @@
 import { site } from "@/lib/content/site";
+import { ScrambleText } from "@/components/motion/ScrambleText";
 
 export function Hero() {
   return (
@@ -8,7 +9,7 @@ export function Hero() {
       </span>
 
       <h1 className="mt-6 max-w-5xl font-display text-display font-bold">
-        {site.name} builds{" "}
+        <ScrambleText text={site.name} /> builds{" "}
         <span className="bg-linear-to-r from-accent to-accent-2 bg-clip-text text-transparent">
           interfaces
         </span>{" "}
