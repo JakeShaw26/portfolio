@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk } from "next/font/google";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Cursor } from "@/components/motion/Cursor";
+import { AtmosphereDrift } from "@/components/motion/AtmosphereDrift";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -34,6 +35,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col font-sans text-foreground">
         <div aria-hidden className="atmosphere" />
+        <AtmosphereDrift />
         <Cursor />
         <SmoothScroll>{children}</SmoothScroll>
       </body>

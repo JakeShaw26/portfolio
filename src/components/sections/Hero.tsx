@@ -1,4 +1,5 @@
 import { site } from "@/lib/content/site";
+import { AnimatedHeadline } from "@/components/motion/AnimatedHeadline";
 
 export function Hero() {
   return (
@@ -7,10 +8,10 @@ export function Hero() {
         Available 2026
       </span>
 
-      <h1 className="mt-8 max-w-[14ch] font-display text-display font-semibold">
+      <AnimatedHeadline className="mt-8 max-w-[14ch] font-display text-display font-semibold">
         Software <span className="text-accent italic">engineer</span> &
         interface craftsman.
-      </h1>
+      </AnimatedHeadline>
 
       <p className="mt-10 max-w-xl text-lg leading-relaxed text-muted">
         {site.intro}

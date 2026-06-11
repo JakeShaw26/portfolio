@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { StackMotion } from "@/components/motion/StackMotion";
 import { projects } from "@/lib/content/projects";
 
 const posterGradients = [
@@ -20,6 +21,7 @@ export function ProjectShowcase() {
       id="work"
       className="relative px-6 py-28 sm:px-10 sm:py-40 lg:px-16"
     >
+      <StackMotion />
       <Reveal className="mb-12 flex items-center gap-3 text-eyebrow font-semibold text-accent uppercase">
         <span className="tabular-nums">02</span>
         <span className="h-px w-10 bg-accent/40" />
