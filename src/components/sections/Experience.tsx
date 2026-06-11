@@ -3,7 +3,7 @@ import { Timeline } from "@/components/sections/Timeline";
 
 export function Experience() {
   return (
-    <Section id="experience" index="04" label="Experience">
+    <Section id="experience" index="03" label="Experience">
       <Timeline />
     </Section>
   );

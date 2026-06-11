@@ -3,18 +3,18 @@ import { testimonials } from "@/lib/content/testimonials";
 
 export function Testimonials() {
   return (
-    <Section id="testimonials" index="06" label="Signal">
+    <Section id="testimonials" index="05" label="Kind Words">
       <div className="grid gap-6 md:grid-cols-3">
         {testimonials.map((testimonial) => (
           <figure
             key={testimonial.author}
-            className="flex flex-col justify-between border border-hairline p-6 transition-colors hover:border-muted"
+            className="flex flex-col justify-between rounded-3xl border border-line bg-surface p-8"
           >
-            <blockquote className="text-sm leading-relaxed text-foreground/90">
+            <blockquote className="font-display text-xl leading-relaxed italic">
               “{testimonial.quote}”
             </blockquote>
-            <figcaption className="mt-6 font-mono text-xs text-muted">
-              <span className="block text-foreground">
+            <figcaption className="mt-8 text-sm text-muted">
+              <span className="block font-medium text-foreground">
                 {testimonial.author}
               </span>
               {testimonial.title}

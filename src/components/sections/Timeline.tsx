@@ -5,9 +5,9 @@ import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { experience } from "@/lib/content/experience";
 
 /**
- * Vertical timeline. An accent progress line scrubs down the hairline track as
- * the section scrolls, and nodes pop in as they're reached. Under reduced
- * motion the accent line simply renders full-height with no animation.
+ * Experience timeline. An accent progress line scrubs down the track as the
+ * section scrolls; nodes pop in as reached. Under reduced motion the accent
+ * line simply renders full-height with no animation.
  */
 export function Timeline() {
   const listRef = useRef<HTMLOListElement>(null);
@@ -33,7 +33,7 @@ export function Timeline() {
           gsap.from(node, {
             scale: 0,
             ease: "back.out(2)",
-            duration: 0.4,
+            duration: 0.45,
             scrollTrigger: { trigger: node, start: "top 85%", once: true },
           });
         });
@@ -43,27 +43,27 @@ export function Timeline() {
   );
 
   return (
-    <ol ref={listRef} className="relative pl-8">
+    <ol ref={listRef} className="relative pl-10">
       <span
         aria-hidden
-        className="absolute top-2 bottom-2 left-0 w-px bg-hairline"
+        className="absolute top-2 bottom-2 left-0 w-0.5 rounded-full bg-line"
       />
       <span
         ref={lineRef}
         aria-hidden
-        className="absolute top-2 bottom-2 left-0 w-px bg-accent"
+        className="absolute top-2 bottom-2 left-0 w-0.5 rounded-full bg-accent"
       />
       {experience.map((entry) => (
-        <li key={entry.period} className="relative pb-12 pl-8 last:pb-0">
-          <span className="tl-node absolute top-1.5 left-0 h-2 w-2 -translate-x-1/2 rounded-full bg-accent" />
-          <span className="font-mono text-xs text-muted uppercase">
+        <li key={entry.period} className="relative pb-16 pl-10 last:pb-0">
+          <span className="tl-node absolute top-1 left-0 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-background bg-accent" />
+          <span className="text-eyebrow text-muted uppercase">
             {entry.period}
           </span>
-          <h3 className="mt-1 font-display text-2xl font-medium">
+          <h3 className="mt-2 font-display text-3xl font-semibold">
             {entry.role}
           </h3>
-          <p className="font-mono text-sm text-accent">{entry.company}</p>
-          <p className="mt-3 max-w-2xl text-sm text-muted">
+          <p className="mt-1 text-lg text-accent">{entry.company}</p>
+          <p className="mt-4 max-w-2xl leading-relaxed text-muted">
             {entry.description}
           </p>
         </li>

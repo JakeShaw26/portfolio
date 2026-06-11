@@ -3,20 +3,16 @@ import { skills } from "@/lib/content/skills";
 
 export function Skills() {
   return (
-    <Section id="skills" index="05" label="Stack">
-      {/* gap-px over a hairline background paints crisp 1px grid rules between cells */}
-      <div className="grid gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+    <Section id="skills" index="04" label="Stack">
+      <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
         {skills.map((group) => (
-          <div
-            key={group.label}
-            className="bg-background p-6 transition-colors hover:bg-surface"
-          >
-            <h3 className="font-mono text-label text-accent uppercase">
+          <div key={group.label}>
+            <h3 className="font-display text-2xl font-semibold">
               {group.label}
             </h3>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-5 space-y-2.5">
               {group.items.map((item) => (
-                <li key={item} className="text-sm">
+                <li key={item} className="text-muted">
                   {item}
                 </li>
               ))}
