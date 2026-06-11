@@ -8,7 +8,7 @@ export function Testimonials() {
         {testimonials.map((testimonial) => (
           <figure
             key={testimonial.author}
-            className="flex flex-col justify-between border border-hairline p-6"
+            className="flex flex-col justify-between border border-hairline p-6 transition-colors hover:border-muted"
           >
             <blockquote className="text-sm leading-relaxed text-foreground/90">
               “{testimonial.quote}”

@@ -7,7 +7,10 @@ export function Skills() {
       {/* gap-px over a hairline background paints crisp 1px grid rules between cells */}
       <div className="grid gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
         {skills.map((group) => (
-          <div key={group.label} className="bg-background p-6">
+          <div
+            key={group.label}
+            className="bg-background p-6 transition-colors hover:bg-surface"
+          >
             <h3 className="font-mono text-label text-accent uppercase">
               {group.label}
             </h3>
