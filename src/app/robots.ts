@@ -1,0 +1,15 @@
+import type { MetadataRoute } from "next";
+
+import { siteUrl } from "@/lib/content/site";
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      // The contact endpoint is for the form, not for crawling.
+      disallow: "/api/",
+    },
+    sitemap: `${siteUrl}/sitemap.xml`,
+  };
+}

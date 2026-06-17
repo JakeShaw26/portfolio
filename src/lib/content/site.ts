@@ -11,6 +11,12 @@ export type NavItem = {
   href: string;
 };
 
+// Canonical site origin (no trailing slash). Used for metadata, OG, sitemap.
+// Override per-environment with NEXT_PUBLIC_SITE_URL on Vercel.
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+  "https://jakeshaw.dev"; // TODO(content): real production domain
+
 export const site = {
   name: "Jake Shaw",
   role: "Software Engineer",

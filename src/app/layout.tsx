@@ -3,6 +3,7 @@ import { Fraunces, Hanken_Grotesk } from "next/font/google";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Cursor } from "@/components/motion/Cursor";
 import { AtmosphereDrift } from "@/components/motion/AtmosphereDrift";
+import { site, siteUrl } from "@/lib/content/site";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -16,11 +17,41 @@ const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
 });
 
+const title = `${site.name} — ${site.role}`;
+const description = site.intro;
+
 export const metadata: Metadata = {
-  // TODO(content): replace with real name + role.
-  title: "Jake Shaw — Software Engineer",
-  description:
-    "Frontend-focused software engineer crafting interfaces that feel alive.",
+  // metadataBase makes every relative URL below (OG image, canonical) absolute.
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: title,
+    template: `%s — ${site.name}`,
+  },
+  description,
+  keywords: [
+    "software engineer",
+    "frontend developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    site.name,
+  ],
+  authors: [{ name: site.name }],
+  creator: site.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: site.name,
+    title,
+    description,
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
@@ -34,6 +65,9 @@ export default function RootLayout({
       className={`${fraunces.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans text-foreground">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <div aria-hidden className="atmosphere" />
         <AtmosphereDrift />
         <Cursor />
