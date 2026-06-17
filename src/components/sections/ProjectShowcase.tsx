@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Reveal } from "@/components/motion/Reveal";
 import { StackMotion } from "@/components/motion/StackMotion";
 import { projects } from "@/lib/content/projects";
@@ -68,12 +70,12 @@ export function ProjectShowcase() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={project.href}
+                <Link
+                  href={`/work/${project.slug}`}
                   className="mt-7 text-sm font-medium text-accent transition-opacity hover:opacity-70"
                 >
                   View case study →
-                </a>
+                </Link>
               </div>
             </article>
           </div>

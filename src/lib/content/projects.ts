@@ -1,17 +1,27 @@
 // TODO(content): replace with real projects / case studies.
 
+export type ProjectSection = {
+  heading: string;
+  body: string;
+};
+
 export type Project = {
+  slug: string;
   index: string;
   title: string;
   summary: string;
   role: string;
   year: string;
   stack: string[];
-  href?: string;
+  /** External link (live site or repo) shown on the case study page. */
+  liveUrl?: string;
+  /** Case study body. Falls back to `summary` on the detail page when omitted. */
+  caseStudy?: ProjectSection[];
 };
 
 export const projects: Project[] = [
   {
+    slug: "helix-analytics",
     index: "01",
     title: "Helix Analytics",
     summary:
@@ -19,9 +29,24 @@ export const projects: Project[] = [
     role: "Lead Frontend Engineer",
     year: "2025",
     stack: ["Next.js", "TypeScript", "WebSockets", "D3"],
-    href: "#",
+    // TODO(content): mock case study — replace with the real write-up.
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "The existing dashboard re-rendered its entire chart tree on every websocket tick, capping usable refresh rates well below what traders needed and dropping frames on anything but the newest hardware.",
+      },
+      {
+        heading: "The approach",
+        body: "Rebuilt the chart layer on a canvas-based renderer driven by a windowed data store, replaced the dense table with a virtualized grid, and moved tick aggregation off the main thread into a worker.",
+      },
+      {
+        heading: "The outcome",
+        body: "Interaction latency dropped from ~400ms to sub-100ms under full tick load, and the grid now holds 50k+ rows without scroll jank.",
+      },
+    ],
   },
   {
+    slug: "meridian-commerce",
     index: "02",
     title: "Meridian Commerce",
     summary:
@@ -29,9 +54,9 @@ export const projects: Project[] = [
     role: "Frontend Engineer",
     year: "2024",
     stack: ["React", "GraphQL", "Tailwind", "Stripe"],
-    href: "#",
   },
   {
+    slug: "cartograph",
     index: "03",
     title: "Cartograph",
     summary:
@@ -39,9 +64,9 @@ export const projects: Project[] = [
     role: "Founding Engineer",
     year: "2023",
     stack: ["TypeScript", "MapLibre", "Node.js"],
-    href: "#",
   },
   {
+    slug: "orbit-design-system",
     index: "04",
     title: "Orbit Design System",
     summary:
@@ -49,6 +74,5 @@ export const projects: Project[] = [
     role: "Design Systems Engineer",
     year: "2022",
     stack: ["React", "Storybook", "Style Dictionary"],
-    href: "#",
   },
 ];

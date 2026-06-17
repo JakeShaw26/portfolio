@@ -29,7 +29,6 @@ export const site = {
   socials: [
     { label: "GitHub", href: "#" },
     { label: "LinkedIn", href: "#" },
-    { label: "X", href: "#" },
   ] satisfies SocialLink[],
 };
 
