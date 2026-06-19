@@ -13,20 +13,20 @@ export function Hero() {
         interface craftsman.
       </AnimatedHeadline>
 
-      <p className="mt-10 max-w-xl text-lg leading-relaxed text-muted">
+      <p className="mt-10 max-w-xl text-xl leading-relaxed text-muted">
         {site.intro}
       </p>
 
       <div className="mt-12 flex items-center gap-6">
         <a
           href="#work"
-          className="rounded-full bg-foreground px-7 py-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
+          className="rounded-full bg-foreground px-8 py-3.5 text-base font-medium text-background transition-opacity hover:opacity-90"
         >
           See the work
         </a>
         <a
           href="#contact"
-          className="text-sm text-muted transition-colors hover:text-foreground"
+          className="text-base text-muted transition-colors hover:text-foreground"
         >
           Get in touch →
         </a>

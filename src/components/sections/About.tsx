@@ -14,7 +14,7 @@ export function About() {
           {site.intro}
         </p>
 
-        <dl className="space-y-6 text-sm text-muted md:col-span-4 md:col-start-9 md:row-start-1 md:self-end">
+        <dl className="space-y-6 text-base text-muted md:col-span-4 md:col-start-9 md:row-start-1 md:self-end">
           <div>
             <dt className="text-eyebrow text-foreground/50 uppercase">Based</dt>
             <dd className="mt-1 text-foreground">{site.location}</dd>

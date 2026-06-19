@@ -20,15 +20,15 @@ export const siteUrl =
 export const site = {
   name: "Jake Shaw",
   role: "Software Engineer",
-  location: "UK",
-  available: true,
+  location: "Manchester, UK",
+  available: false,
   tagline: "builds interfaces that ship.",
   intro:
     "Frontend-focused engineer crafting fast, accessible, and considered web interfaces. Currently learning the backend, CI/CD, and security craft end-to-end.",
-  email: "hello@example.com", // TODO(content): real contact email
+  email: "hello@example.com", // TODO(content): real contact email - inject through secrets
   socials: [
-    { label: "GitHub", href: "#" },
-    { label: "LinkedIn", href: "#" },
+    { label: "GitHub", href: "#" }, // TODO(content): real link - inject through secrets
+    { label: "LinkedIn", href: "#" }, // TODO(content): real link - inject through secrets
   ] satisfies SocialLink[],
 };
 
