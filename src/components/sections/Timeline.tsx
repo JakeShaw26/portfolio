@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { experience } from "@/lib/content/experience";
 
@@ -66,6 +67,12 @@ export function Timeline() {
           <p className="mt-4 max-w-2xl leading-relaxed text-muted">
             {entry.description}
           </p>
+          <Link
+            href={`/experience/${entry.slug}`}
+            className="mt-4 inline-block text-sm font-medium text-accent transition-opacity hover:opacity-70"
+          >
+            View role →
+          </Link>
         </li>
       ))}
     </ol>

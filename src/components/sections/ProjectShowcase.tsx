@@ -1,15 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { StackMotion } from "@/components/motion/StackMotion";
 import { projects } from "@/lib/content/projects";
 
-const posterGradients = [
-  "linear-gradient(135deg, var(--glow-1), var(--glow-2))",
-  "linear-gradient(135deg, var(--glow-2), var(--accent))",
-  "linear-gradient(135deg, var(--glow-3), var(--glow-1))",
-  "linear-gradient(135deg, var(--glow-1), var(--accent))",
-];
+const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
 
 /**
  * Selected Work, built as a CSS sticky-stack deck: each card sticks and the
@@ -30,24 +26,22 @@ export function ProjectShowcase() {
         <span>Selected Work</span>
       </Reveal>
 
-      <div className="space-y-6">
+      <div className="mx-auto max-w-5xl space-y-6">
         {projects.map((project, i) => (
           <div
             key={project.index}
             className="project-card sticky"
             style={{ top: `${6 + i * 0.75}rem` }}
           >
-            <article className="grid gap-8 rounded-3xl border border-line bg-surface p-6 shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] sm:p-10 md:grid-cols-2">
-              <div
-                className="relative aspect-[4/3] overflow-hidden rounded-2xl"
-                style={{
-                  background: posterGradients[i % posterGradients.length],
-                }}
-              >
-                {/* PROJECT VISUAL SLOT — real screenshot drops in here later */}
-                <span className="absolute bottom-4 left-6 font-display text-7xl font-semibold text-surface/80">
-                  {project.index}
-                </span>
+            <article className="grid gap-6 rounded-3xl border border-line bg-surface p-5 shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] sm:p-8 md:grid-cols-2">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-background">
+                <Image
+                  src={project.image ?? PLACEHOLDER_IMAGE}
+                  alt={project.imageAlt ?? `${project.title} screenshot`}
+                  fill
+                  className="object-contain p-10"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </div>
 
               <div className="flex flex-col justify-center">

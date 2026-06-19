@@ -1,0 +1,17 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3c57b" />
+      <stop offset="100%" stop-color="#e68a5c" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)" />
+  <g fill="none" stroke="#fff8ec" stroke-width="3" opacity="0.85">
+    <rect x="280" y="220" width="240" height="160" rx="10" />
+    <circle cx="330" cy="265" r="16" />
+    <path d="M280 360 L370 295 L430 330 L520 250 L520 380 L280 380 Z" fill="#fff8ec" stroke="none" opacity="0.5" />
+  </g>
+  <text x="400" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#fff8ec" opacity="0.85">
+    Project image placeholder
+  </text>
+</svg>

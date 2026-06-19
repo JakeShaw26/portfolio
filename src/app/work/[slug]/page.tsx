@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
 import { projects, type Project } from "@/lib/content/projects";
+
+const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -49,36 +52,50 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         >
           ← Back to work
         </Link>
-
-        <span className="mt-10 block text-eyebrow text-muted uppercase">
-          {project.year} · {project.role}
-        </span>
-        <h1 className="mt-3 max-w-3xl font-display text-display font-semibold">
-          {project.title}
-        </h1>
-
-        <ul className="mt-8 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-line px-3 py-1 text-sm text-muted"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
-
-        {project.liveUrl && (
-          <Magnetic>
-            <a
-              href={project.liveUrl}
-              className="mt-8 inline-block text-sm font-medium text-accent transition-opacity hover:opacity-70"
-            >
-              Visit live site ↗
-            </a>
-          </Magnetic>
-        )}
       </Reveal>
+
+      <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <Reveal>
+          <span className="block text-eyebrow text-muted uppercase">
+            {project.year} · {project.role}
+          </span>
+          <h1 className="mt-3 font-display text-h2 font-semibold">
+            {project.title}
+          </h1>
+
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
+              <li
+                key={tech}
+                className="rounded-full border border-line px-3 py-1 text-sm text-muted"
+              >
+                {tech}
+              </li>
+            ))}
+          </ul>
+
+          {project.liveUrl && (
+            <Magnetic>
+              <a
+                href={project.liveUrl}
+                className="mt-8 inline-block text-sm font-medium text-accent transition-opacity hover:opacity-70"
+              >
+                Visit live site ↗
+              </a>
+            </Magnetic>
+          )}
+        </Reveal>
+
+        <Reveal className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] lg:mx-0">
+          <Image
+            src={project.image ?? PLACEHOLDER_IMAGE}
+            alt={project.imageAlt ?? `${project.title} screenshot`}
+            fill
+            className="object-contain p-8"
+            sizes="(min-width: 1024px) 28rem, 100vw"
+          />
+        </Reveal>
+      </div>
 
       <div className="mt-16 max-w-2xl space-y-12">
         {project.caseStudy ? (
