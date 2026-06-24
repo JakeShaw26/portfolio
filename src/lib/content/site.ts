@@ -27,8 +27,8 @@ export const site = {
     "Frontend-focused engineer crafting fast, accessible, and considered web interfaces. Currently learning the backend, CI/CD, and security craft end-to-end.",
   email: "hello@example.com", // TODO(content): real contact email - inject through secrets
   socials: [
-    { label: "GitHub", href: "#" }, // TODO(content): real link - inject through secrets
-    { label: "LinkedIn", href: "#" }, // TODO(content): real link - inject through secrets
+    { label: "GitHub", href: "https://github.com/JakeShaw26" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/jake--shaw/" },
   ] satisfies SocialLink[],
 };
 
