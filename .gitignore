@@ -40,6 +40,9 @@ yarn-error.log*
 # planning docs — local only, never committed
 /plans/
 
+# content drafts/templates — local only, never committed
+/content/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
