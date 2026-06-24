@@ -13,9 +13,11 @@ type AnimatedHeadlineProps = {
 
 /**
  * Splits its headline into characters and settles them in from below on mount
- * ("like dust"). `mask: "chars"` clips each glyph so it rises from behind its
- * own line. `aria: "auto"` keeps the original text in the accessibility tree.
- * No-op under reduced motion.
+ * ("like dust"). `mask: "lines"` clips at the line level (not per-char — a
+ * tight per-glyph clip box crops swashes/descenders/rotation overshoot on
+ * glyphs like "&") so each line rises from behind one shared mask while
+ * individual chars still animate in with stagger. `aria: "auto"` keeps the
+ * original text in the accessibility tree. No-op under reduced motion.
  */
 export function AnimatedHeadline({
   children,
@@ -27,11 +29,26 @@ export function AnimatedHeadline({
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const split = SplitText.create(ref.current, {
-          type: "words,chars",
-          mask: "chars",
+        const el = ref.current;
+        if (!el) return;
+
+        // The line mask's clip box height comes from the inherited line-height,
+        // which is tighter than the glyphs' rendered height — loosen it only
+        // while the mask exists, then restore the design's tight line-height
+        // once revert() hands the plain text back.
+        const originalLineHeight = el.style.lineHeight;
+        el.style.lineHeight = "1.3";
+
+        const split = SplitText.create(el, {
+          type: "lines,words,chars",
+          mask: "lines",
           aria: "auto",
         });
+
+        const restore = () => {
+          split.revert();
+          el.style.lineHeight = originalLineHeight;
+        };
 
         gsap.from(split.chars, {
           yPercent: 120,
@@ -43,7 +60,7 @@ export function AnimatedHeadline({
           delay: 0.15,
         });
 
-        return () => split.revert();
+        return restore;
       });
     },
     { scope: ref },
