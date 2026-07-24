@@ -5,27 +5,27 @@ import { notFound } from "next/navigation";
 
 import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
-import { projects, type Project } from "@/lib/content/projects";
+import type { Project } from "@/lib/content/projects";
+import { getAllProjects, getProjectBySlug } from "@/lib/cms/projects";
 
 const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
+
+export const revalidate = 3600;
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-function getProject(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
-}
-
-export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((project: Project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return {};
 
   return {
@@ -36,7 +36,7 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project) notFound();
 

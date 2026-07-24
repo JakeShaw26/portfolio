@@ -3,14 +3,18 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
-import { experience } from "@/lib/content/experience";
+import type { ExperienceEntry } from "@/lib/content/experience";
+
+type TimelineProps = {
+  experience: ExperienceEntry[];
+};
 
 /**
  * Experience timeline. An accent progress line scrubs down the track as the
  * section scrolls; nodes pop in as reached. Under reduced motion the accent
  * line simply renders full-height with no animation.
  */
-export function Timeline() {
+export function Timeline({ experience }: TimelineProps) {
   const listRef = useRef<HTMLOListElement>(null);
   const lineRef = useRef<HTMLSpanElement>(null);
 
@@ -55,7 +59,7 @@ export function Timeline() {
         className="absolute top-2 bottom-2 left-0 w-0.5 rounded-full bg-accent"
       />
       {experience.map((entry) => (
-        <li key={entry.period} className="relative pb-16 pl-10 last:pb-0">
+        <li key={entry.slug} className="relative pb-16 pl-10 last:pb-0">
           <span className="tl-node absolute top-1 left-0 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-background bg-accent" />
           <span className="text-eyebrow text-muted uppercase">
             {entry.period}

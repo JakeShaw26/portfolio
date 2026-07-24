@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { StackMotion } from "@/components/motion/StackMotion";
-import { projects } from "@/lib/content/projects";
+import { getAllProjects } from "@/lib/cms/projects";
 
 const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
 
@@ -13,7 +13,9 @@ const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
  * positioning (and no overlap bug). Works fully without JS; Phase 2b layers
  * scale/dim on the covered cards via ScrollTrigger.
  */
-export function ProjectShowcase() {
+export async function ProjectShowcase() {
+  const projects = await getAllProjects();
+
   return (
     <section
       id="work"
@@ -29,7 +31,7 @@ export function ProjectShowcase() {
       <div className="mx-auto max-w-5xl space-y-6">
         {projects.map((project, i) => (
           <div
-            key={project.index}
+            key={project.slug}
             className="project-card sticky"
             style={{ top: `${6 + i * 0.75}rem` }}
           >

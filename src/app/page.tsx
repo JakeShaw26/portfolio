@@ -8,6 +8,10 @@ import { Skills } from "@/components/sections/Skills";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Contact } from "@/components/sections/Contact";
 
+// Experience/work content is fetched from Contentful; refresh hourly so edits
+// land without a redeploy (see ARCHITECTURE.md).
+export const revalidate = 3600;
+
 /*
  * Static section scaffold with placeholder content (typed in src/lib/content).
  * GSAP motion primitives layer on in Phase 2; real copy swaps in via the

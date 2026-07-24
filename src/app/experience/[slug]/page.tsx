@@ -3,25 +3,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Reveal } from "@/components/motion/Reveal";
-import { experience, type ExperienceEntry } from "@/lib/content/experience";
+import type { ExperienceEntry } from "@/lib/content/experience";
+import { getAllExperience, getExperienceBySlug } from "@/lib/cms/experience";
+
+export const revalidate = 3600;
 
 type ExperiencePageProps = {
   params: Promise<{ slug: string }>;
 };
 
-function getExperience(slug: string): ExperienceEntry | undefined {
-  return experience.find((entry) => entry.slug === slug);
-}
-
-export function generateStaticParams() {
-  return experience.map((entry) => ({ slug: entry.slug }));
+export async function generateStaticParams() {
+  const entries = await getAllExperience();
+  return entries.map((entry: ExperienceEntry) => ({ slug: entry.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: ExperiencePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getExperience(slug);
+  const entry = await getExperienceBySlug(slug);
   if (!entry) return {};
 
   return {
@@ -34,7 +34,7 @@ export default async function ExperiencePage({
   params,
 }: ExperiencePageProps) {
   const { slug } = await params;
-  const entry = getExperience(slug);
+  const entry = await getExperienceBySlug(slug);
 
   if (!entry) notFound();
 
