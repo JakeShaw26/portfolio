@@ -7,7 +7,7 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(contactSubject
 export function Contact() {
   return (
     <Section id="contact" index="06" label="Contact">
-      <div className="grid gap-12 md:grid-cols-12 md:items-end">
+      <div className="grid gap-12 md:grid-cols-12 md:items-center">
         <h2 className="font-display text-h2 font-semibold md:col-span-6">
           Let’s build something{" "}
           <span className="text-accent italic">together</span>.

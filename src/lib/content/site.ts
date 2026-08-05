@@ -27,9 +27,12 @@ export const site = {
   role: "Software Engineer",
   location: "Manchester, UK",
   available: false,
-  tagline: "builds interfaces that ship.",
+  // Rendered directly beneath `name` on the OG card, so it reads as a continuation
+  // of it ("Jake Shaw / builds interfaces…") — hence the lowercase start.
+  // Deliberately mirrors the About heading so the shared card and the page agree.
+  tagline: "builds interfaces that are simple to use — and simple to test.",
   intro:
-    "Frontend-focused engineer crafting fast, accessible, and considered web interfaces. Currently learning the backend, CI/CD, and security craft end-to-end.",
+    "Frontend engineer with a background in test, building accessible interfaces and AI-enhanced products. React, Next.js and Node — going deeper, not wider.",
   // Public contact address. Rendered as a `mailto:` link, so it is intentionally
   // visible — not a secret, and not injectable via env (it's needed at build time
   // for static output).

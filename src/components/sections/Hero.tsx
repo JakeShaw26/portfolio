@@ -4,11 +4,7 @@ import { AnimatedHeadline } from "@/components/motion/AnimatedHeadline";
 export function Hero() {
   return (
     <section className="relative flex min-h-dvh flex-col justify-center px-6 py-32 sm:px-10 lg:px-16">
-      <span className="text-eyebrow font-semibold text-accent uppercase">
-        Available 2026
-      </span>
-
-      <AnimatedHeadline className="mt-8 max-w-[14ch] font-display text-display font-semibold">
+      <AnimatedHeadline className="max-w-[14ch] font-display text-display font-semibold">
         Software <span className="text-accent italic">engineer</span> &
         interface craftsman.
       </AnimatedHeadline>
