@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Magnetic } from "@/components/motion/Magnetic";
+import { CtaLink } from "@/components/ui/CtaLink";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/lib/content/projects";
 import { getAllProjects, getProjectBySlug } from "@/lib/cms/projects";
@@ -41,10 +41,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   if (!project) notFound();
 
   return (
-    <main
-      id="main-content"
-      className="px-6 py-28 sm:px-10 sm:py-40 lg:px-16"
-    >
+    <main id="main-content" className="px-6 py-28 sm:px-10 sm:py-40 lg:px-16">
       <Reveal>
         <Link
           href="/#work"
@@ -75,14 +72,16 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           </ul>
 
           {project.liveUrl && (
-            <Magnetic>
-              <a
+            <div className="mt-8">
+              <CtaLink
                 href={project.liveUrl}
-                className="mt-8 inline-block text-sm font-medium text-accent transition-opacity hover:opacity-70"
+                variant="secondary"
+                size="sm"
+                external
               >
-                Visit live site ↗
-              </a>
-            </Magnetic>
+                Visit live site
+              </CtaLink>
+            </div>
           )}
         </Reveal>
 
@@ -104,9 +103,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               <h2 className="font-display text-h3 font-semibold">
                 {section.heading}
               </h2>
-              <p className="mt-4 leading-relaxed text-muted">
-                {section.body}
-              </p>
+              <p className="mt-4 leading-relaxed text-muted">{section.body}</p>
             </Reveal>
           ))
         ) : (

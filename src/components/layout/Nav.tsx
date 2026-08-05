@@ -1,5 +1,5 @@
 import { site, nav } from "@/lib/content/site";
-import { Magnetic } from "@/components/motion/Magnetic";
+import { CtaLink } from "@/components/ui/CtaLink";
 
 export function Nav() {
   return (
@@ -22,14 +22,9 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <Magnetic>
-          <a
-            href="#contact"
-            className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-surface transition-opacity hover:opacity-90"
-          >
-            Say hello
-          </a>
-        </Magnetic>
+        <CtaLink href="#contact" size="sm">
+          Say hello
+        </CtaLink>
       </div>
     </header>
   );

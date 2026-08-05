@@ -1,7 +1,5 @@
-import Link from "next/link";
-
-import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
+import { CtaLink } from "@/components/ui/CtaLink";
 
 export default function NotFound() {
   return (
@@ -20,14 +18,7 @@ export default function NotFound() {
           This page drifted off somewhere. Let’s get you back to solid ground.
         </p>
         <div className="mt-10 flex justify-center">
-          <Magnetic>
-            <Link
-              href="/"
-              className="rounded-full bg-accent px-8 py-3 font-display text-lg text-surface transition-opacity hover:opacity-90"
-            >
-              Back home
-            </Link>
-          </Magnetic>
+          <CtaLink href="/">Back home</CtaLink>
         </div>
       </Reveal>
     </main>

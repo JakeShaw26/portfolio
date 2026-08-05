@@ -11,56 +11,54 @@ export const contentType = "image/png";
 // keep it dependency-free; swap in Fraunces later by passing font ArrayBuffers.
 export default function OpengraphImage() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: "80px",
+        background: "#f7efe2",
+        backgroundImage:
+          "radial-gradient(900px 900px at 85% 5%, #f3c57b 0%, transparent 60%), radial-gradient(700px 700px at 5% 95%, #e68a5c 0%, transparent 60%)",
+        color: "#2b2018",
+        fontFamily: "serif",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "80px",
-          background: "#f7efe2",
-          backgroundImage:
-            "radial-gradient(900px 900px at 85% 5%, #f3c57b 0%, transparent 60%), radial-gradient(700px 700px at 5% 95%, #e68a5c 0%, transparent 60%)",
-          color: "#2b2018",
-          fontFamily: "serif",
+          alignItems: "center",
+          gap: "18px",
+          fontSize: 26,
+          letterSpacing: 4,
+          textTransform: "uppercase",
+          color: "#c2502e",
         }}
       >
+        <span>{site.role}</span>
+        <span style={{ width: 60, height: 2, background: "#c2502e" }} />
+        <span>{site.location}</span>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div style={{ fontSize: 128, lineHeight: 1, fontWeight: 600 }}>
+          {site.name}
+        </div>
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "18px",
-            fontSize: 26,
-            letterSpacing: 4,
-            textTransform: "uppercase",
-            color: "#c2502e",
+            fontSize: 40,
+            lineHeight: 1.2,
+            maxWidth: 900,
+            color: "#8a7561",
+            fontFamily: "sans-serif",
           }}
         >
-          <span>{site.role}</span>
-          <span style={{ width: 60, height: 2, background: "#c2502e" }} />
-          <span>{site.location}</span>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          <div style={{ fontSize: 128, lineHeight: 1, fontWeight: 600 }}>
-            {site.name}
-          </div>
-          <div
-            style={{
-              fontSize: 40,
-              lineHeight: 1.2,
-              maxWidth: 900,
-              color: "#8a7561",
-              fontFamily: "sans-serif",
-            }}
-          >
-            {site.tagline}
-          </div>
+          {site.tagline}
         </div>
       </div>
-    ),
+    </div>,
     size,
   );
 }

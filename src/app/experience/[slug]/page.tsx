@@ -30,19 +30,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function ExperiencePage({
-  params,
-}: ExperiencePageProps) {
+export default async function ExperiencePage({ params }: ExperiencePageProps) {
   const { slug } = await params;
   const entry = await getExperienceBySlug(slug);
 
   if (!entry) notFound();
 
   return (
-    <main
-      id="main-content"
-      className="px-6 py-28 sm:px-10 sm:py-40 lg:px-16"
-    >
+    <main id="main-content" className="px-6 py-28 sm:px-10 sm:py-40 lg:px-16">
       <Reveal>
         <Link
           href="/#experience"
@@ -67,9 +62,7 @@ export default async function ExperiencePage({
               <h2 className="font-display text-h3 font-semibold">
                 {section.heading}
               </h2>
-              <p className="mt-4 leading-relaxed text-muted">
-                {section.body}
-              </p>
+              <p className="mt-4 leading-relaxed text-muted">{section.body}</p>
             </Reveal>
           ))
         ) : (

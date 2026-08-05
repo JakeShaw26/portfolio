@@ -20,6 +20,7 @@ wants to update without touching code or waiting on a redeploy — a new role, a
 new case study.
 
 **Why / technical choices:**
+
 - Plain `fetch()` against the Content Delivery API, no SDK — mirrors
   `src/lib/email/contact.ts`'s existing "plain fetch, no dependency" precedent.
   Token sent via `Authorization: Bearer`, never a query string, so it can't leak
