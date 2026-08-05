@@ -106,7 +106,7 @@ export function About() {
           <div>
             <dt className="text-eyebrow text-foreground/50 uppercase">Focus</dt>
             <dd className="mt-1 text-foreground">
-              Frontend · AI products · Accessibility
+              Frontend · AI products · Accessibility · Full-stack JavaScript
             </dd>
           </div>
         </dl>
