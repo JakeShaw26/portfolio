@@ -8,7 +8,7 @@ on:
 
 jobs:
   ci:
-    name: Lint, typecheck & test
+    name: Lint, typecheck, test & build
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +30,22 @@ jobs:
 
       - name: Test
         run: npm run test
+
+      # Runs last: it is by far the slowest step, so the cheap checks above should
+      # fail first. `next build` pre-renders the Work section and every
+      # `work/[slug]` route, which means it really fetches from Contentful — so it
+      # needs delivery credentials or `fetchEntries` throws (see cms/contentful.ts).
+      #
+      # Secrets are scoped to this single step rather than the job, so no earlier
+      # step (or anything they shell out to) can read them.
+      #
+      # NEXT_PUBLIC_SITE_URL is deliberately left unset: it falls back to localhost,
+      # which is the intended safe default. Nothing is deployed from here.
+      - name: Build
+        run: npm run build
+        env:
+          # Not a secret — the space ID is already published in the committed
+          # .env.example. Storing non-secrets as secrets creates false confidence
+          # and muddies rotation, so it stays inline.
+          CONTENTFUL_SPACE_ID: 98ddc4l0fmm4
+          CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
