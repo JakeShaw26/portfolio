@@ -1,7 +1,12 @@
 import { Section } from "@/components/layout/Section";
-import { testimonials } from "@/lib/content/testimonials";
+import { hasRealTestimonials, testimonials } from "@/lib/content/testimonials";
 
 export function Testimonials() {
+  // The placeholder quotes name people who don't exist, so shipping them would be
+  // fabricated endorsements. Section stays built and ready; it just doesn't render
+  // until the content behind it is real.
+  if (!hasRealTestimonials) return null;
+
   return (
     <Section id="testimonials" index="05" label="Kind Words">
       <div className="grid gap-6 md:grid-cols-3">

@@ -1,10 +1,22 @@
-// TODO(content): replace with real quotes (get permission before publishing names).
+// TODO(content): THESE THREE QUOTES ARE FABRICATED PLACEHOLDERS — the people and
+// companies named below do not exist. They must not reach a public deploy.
+//
+// Plan: move testimonials to Contentful (a `testimonial` content type alongside
+// `experienceEntry` / `workProject`, fetched in `src/lib/cms/`) and populate with
+// real quotes. Get written permission before publishing anyone's name and title.
+//
+// Until real quotes exist, `Testimonials` is not rendered — see the guard in
+// `src/components/sections/Testimonials.tsx`. Delete that guard, and this comment,
+// once the section is reading real content.
 
 export type Testimonial = {
   quote: string;
   author: string;
   title: string;
 };
+
+/** Flip to `true` once every quote below is real and permission-cleared. */
+export const hasRealTestimonials = false;
 
 export const testimonials: Testimonial[] = [
   {
