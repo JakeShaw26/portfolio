@@ -1,0 +1,20 @@
+# Normalise text files to LF in the repository *and* on checkout.
+#
+# `eol=lf` is the part that matters: without it, core.autocrlf=true hands
+# Windows checkouts CRLF working copies while Prettier's endOfLine default
+# is "lf", so `npm run format:check` fails on files nobody has edited and
+# the local formatting gate stops meaning anything.
+* text=auto eol=lf
+
+# Shell scripts must keep LF even if the rules above ever loosen — CRLF in a
+# shebang line makes the interpreter path unresolvable.
+*.sh text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
