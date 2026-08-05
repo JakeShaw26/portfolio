@@ -1,5 +1,6 @@
 import { site } from "@/lib/content/site";
 import { AnimatedHeadline } from "@/components/motion/AnimatedHeadline";
+import { CtaLink } from "@/components/ui/CtaLink";
 
 export function Hero() {
   return (
@@ -13,19 +14,12 @@ export function Hero() {
         {site.intro}
       </p>
 
-      <div className="mt-12 flex items-center gap-6">
-        <a
-          href="#work"
-          className="rounded-full bg-foreground px-8 py-3.5 text-base font-medium text-background transition-opacity hover:opacity-90"
-        >
-          See the work
-        </a>
-        <a
-          href="#contact"
-          className="text-base text-muted transition-colors hover:text-foreground"
-        >
-          Get in touch →
-        </a>
+      {/* CtaLink appends its own trailing glyph, so no → in the label. */}
+      <div className="mt-12 flex flex-wrap items-center gap-4">
+        <CtaLink href="#work">See the work</CtaLink>
+        <CtaLink href="#contact" variant="secondary">
+          Get in touch
+        </CtaLink>
       </div>
 
       <span
