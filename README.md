@@ -4,6 +4,8 @@ Personal site and case-study collection for a frontend engineer with a backgroun
 test. Built with Next.js 16 (App Router) and React 19, with work and experience content
 served from Contentful.
 
+**Live:** https://portfolio-ten-navy-83.vercel.app
+
 ---
 
 ## Why it's built this way
