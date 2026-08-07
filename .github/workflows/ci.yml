@@ -19,6 +19,12 @@ jobs:
           node-version: 20
           cache: npm
 
+      # Before `npm ci`: it needs no dependencies, takes milliseconds, and a
+      # failure here means a privacy leak is already in the diff — worth knowing
+      # before spending three minutes on the rest of the pipeline.
+      - name: Check assets for embedded metadata
+        run: npm run check:assets
+
       - name: Install dependencies
         run: npm ci
 
