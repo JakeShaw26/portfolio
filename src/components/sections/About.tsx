@@ -1,6 +1,9 @@
+import Image from "next/image";
+
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { site } from "@/lib/content/site";
+import profilePhoto from "../../../public/profile.jpg";
 
 /**
  * Editorial three-band layout: headline + facts share the top row, a wide lead
@@ -27,6 +30,25 @@ export function About() {
             settled it. I&rsquo;ve always liked problems and puzzles. This
             turned out to be the version of that I wanted to do every day.
           </p>
+        </Reveal>
+
+        {/*
+          Rendered at 200px against a 400x400 source so it sits at 2x on retina.
+          next/image only ever downscales, so a larger slot would show a soft image
+          rather than a sharp one — a bigger portrait is not worth that here.
+        */}
+        <Reveal
+          delay={0.06}
+          className="md:col-span-4 md:col-start-9 md:row-start-2"
+        >
+          <Image
+            src={profilePhoto}
+            alt="Jake Shaw"
+            width={200}
+            height={200}
+            placeholder="blur"
+            className="rounded-2xl border border-line shadow-[0_20px_50px_-30px_rgba(43,32,24,0.5)]"
+          />
         </Reveal>
 
         <Reveal className="md:col-span-6 md:col-start-1 md:row-start-3">
