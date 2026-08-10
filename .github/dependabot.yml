@@ -1,0 +1,20 @@
+version: 2
+
+# Scope is deliberately narrow. Security *alerts* (enabled separately, in repo
+# settings) already cover npm on the axis that matters — known CVEs — and this
+# site has no auth, no user input and no database. Turning on npm version
+# updates as well would generate a constant drip of PRs across 20-odd deps whose
+# only real effect is teaching everyone to ignore Dependabot, and so miss the one
+# that mattered. npm gets bumped deliberately instead.
+#
+# Actions are the exception, because SHA-pinning buys immutability at the cost of
+# nothing ever moving on its own: the pins sat three majors behind before anyone
+# noticed. Dependabot rewrites both the SHA and the trailing `# vX.Y.Z` comment,
+# which is the part that is tedious to do by hand.
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci

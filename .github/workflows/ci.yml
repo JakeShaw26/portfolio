@@ -6,17 +6,29 @@ on:
   pull_request:
     branches: [main]
 
+# Without this block GITHUB_TOKEN inherits whatever the repo or org default
+# happens to be — which on older defaults is write access to contents, packages,
+# deployments and more. This job only ever needs to read the checkout, so it says
+# so explicitly rather than depending on a settings page nobody will re-check.
+# That matters more once the repo is public and accepting fork PRs.
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: Lint, typecheck, test & build
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          # Matches the Node major Vercel builds with. CI testing on a different
+          # major to the one production runs is a silent source of "works in CI,
+          # breaks on deploy" — and Node 20 went end-of-life in April 2026, so it
+          # no longer receives security patches at all.
+          node-version: 24
           cache: npm
 
       # Before `npm ci`: it needs no dependencies, takes milliseconds, and a
