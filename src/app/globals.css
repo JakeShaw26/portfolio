@@ -69,6 +69,20 @@ body {
   border-radius: 2px;
 }
 
+/*
+ * Hides the scrollbar on a horizontally scrollable region. Only safe where
+ * something else advertises that the region scrolls — the testimonials track
+ * pairs it with clickable dots. Never use it on a bare scroller: the scrollbar
+ * is the affordance, and removing it without a replacement strands anyone on a
+ * mouse wheel.
+ */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Skip link — off-screen until focused, then slides into the top-left. */
 .skip-link {
   position: fixed;
