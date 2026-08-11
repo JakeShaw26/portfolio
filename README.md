@@ -140,3 +140,14 @@ Preview — it's read at **build** time and inlined, so it needs a redeploy to c
 a restart. Unset, it falls back to `http://localhost:3000`, which is a deliberately
 obvious break: a plausible-but-wrong domain would silently point canonical URLs, OG tags
 and `sitemap.xml` at a site nobody here owns.
+
+---
+
+## Licence
+
+**All rights reserved.** This source is public so it can be read — it isn't licensed for
+reuse, redistribution, or deployment as your own site.
+
+That's the default position for a repository with no licence file, stated explicitly so
+it reads as a decision rather than an oversight. If you'd like to use something from
+here, ask — the answer is usually yes.
