@@ -122,7 +122,7 @@ export function About() {
               Status
             </dt>
             <dd className="mt-1 text-accent">
-              {site.available ? "Open to work" : "Currently engaged"}
+              {site.available ? "Open to work" : "Not actively looking"}
             </dd>
           </div>
           <div>
