@@ -94,7 +94,7 @@ export function About() {
             </p>
 
             <p>
-              Most recently that&rsquo;s meant AI. I built Ask Andi, a chatbot
+              Most recently that&rsquo;s meant AI. I was part of a team that built Ask Andi, a chatbot
               live on AND Digital&rsquo;s site that matches prospective clients
               to the right expert — which meant prompt hardening, abuse
               guardrails, and a great deal of work coaxing an LLM into responses
