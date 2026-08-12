@@ -3,13 +3,17 @@
 ## Contentful space
 
 The `98ddc4l0fmm4` space (env `master`) contains 5 stale `experiencePost` entries
-(Awaze, Feeld, JLR, TravelChapter, IDAA) and 5 stale logo assets from an earlier,
-abandoned migration attempt. These do not match the site's real content
-(`and-digital`/`cloudm` experience, `travelchapter`/`jlr`/`idaa`/`ask-andi`
-projects) and are confirmed dead — including the `Awaze logo` asset, despite it
-and a local `public/work/awaze-logo.png` both being touched on 2026-07-05
-(confirmed coincidental, not in-progress work). All of it is deleted as part of
-the Contentful migration.
+and 5 stale logo assets from an earlier, abandoned migration attempt. These do
+not match the site's real content (`and-digital`/`cloudm` experience,
+`travelchapter`/`jlr`/`asset-licensing-platform`/`ask-andi` projects) and are
+confirmed dead — including one logo asset that was touched on 2026-07-05
+alongside its now-deleted local counterpart in `public/work/` (confirmed
+coincidental, not in-progress work). All of it is deleted as part of the
+Contentful migration.
+
+Client names are deliberately absent here: work delivered through AND Digital
+sits under their client agreements, so this repo names a client only where the
+live site already does.
 
 ## Template JSON files
 
