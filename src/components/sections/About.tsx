@@ -104,7 +104,9 @@ export function About() {
               <span className="italic">
                 Architecting Agentic Solutions with Claude
               </span>{" "}
-              most recently. AI-enhanced products are where a lot of the
+              most recently, which fed into sitting and passing
+              Anthropic&rsquo;s Claude Architect Foundations exam.
+              AI-enhanced products are where a lot of the
               genuinely interesting work sits right now, and it&rsquo;s the work
               I want more of.
             </p>
