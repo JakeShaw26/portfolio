@@ -81,6 +81,9 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
               >
                 Visit live site
               </CtaLink>
+              <p className="mt-2 text-xs text-muted">
+                Hosted on the client&apos;s site, not one I control.
+              </p>
             </div>
           )}
         </Reveal>
