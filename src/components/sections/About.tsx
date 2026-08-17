@@ -94,21 +94,20 @@ export function About() {
             </p>
 
             <p>
-              Most recently that&rsquo;s meant AI. I was part of a team that built Ask Andi, a chatbot
-              live on AND Digital&rsquo;s site that matches prospective clients
-              to the right expert — which meant prompt hardening, abuse
-              guardrails, and a great deal of work coaxing an LLM into responses
-              that reliably conform to a JSON schema. That last part was harder
-              than I expected and improved the product enormously. I&rsquo;ve
-              been reading around it since —{" "}
+              Most recently that&rsquo;s meant AI. I was part of a team that
+              built Ask Andi, a chatbot live on AND Digital&rsquo;s site that
+              matches prospective clients to the right expert — which meant
+              prompt hardening, abuse guardrails, and a great deal of work
+              coaxing an LLM into responses that reliably conform to a JSON
+              schema. That last part was harder than I expected and improved the
+              product enormously. I&rsquo;ve been reading around it since —{" "}
               <span className="italic">
                 Architecting Agentic Solutions with Claude
               </span>{" "}
               most recently, which fed into sitting and passing
-              Anthropic&rsquo;s Claude Architect Foundations exam.
-              AI-enhanced products are where a lot of the
-              genuinely interesting work sits right now, and it&rsquo;s the work
-              I want more of.
+              Anthropic&rsquo;s Claude Architect Foundations exam. AI-enhanced
+              products are where a lot of the genuinely interesting work sits
+              right now, and it&rsquo;s the work I want more of.
             </p>
           </div>
         </Reveal>
