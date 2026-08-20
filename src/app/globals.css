@@ -144,3 +144,35 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/*
+ * /cv print output. Global decorative chrome (atmosphere glow, cursor dot,
+ * skip link) is hidden inline via Tailwind's `print:hidden` where it's
+ * rendered; what's left here is what can't be expressed as a utility class —
+ * the page box itself, and expanding link hrefs inline since a printout has
+ * no way to follow a link.
+ */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.8cm;
+  }
+
+  .cv-page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv-page a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cv-page a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    font-weight: 400;
+    color: var(--muted);
+  }
+}

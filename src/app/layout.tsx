@@ -64,11 +64,11 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans text-foreground">
-        <a href="#main-content" className="skip-link">
+      <body className="flex min-h-full flex-col font-sans text-foreground print:bg-white print:text-black">
+        <a href="#main-content" className="skip-link print:hidden">
           Skip to content
         </a>
-        <div aria-hidden className="atmosphere" />
+        <div aria-hidden className="atmosphere print:hidden" />
         <AtmosphereDrift />
         <Cursor />
         <SmoothScroll>{children}</SmoothScroll>
