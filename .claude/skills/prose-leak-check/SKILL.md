@@ -33,6 +33,8 @@ titles) — repeating them is not a leak:
 - **CloudM** — named in `About.tsx` (internship)
 - **JLR** — named as a work project title
 - **Travelchapter** — named as a work project title
+- **Ask Andi** — named as a product/project directly in `About.tsx` ("built Ask
+  Andi, a chatbot live on AND Digital's site")
 
 Anything else — a company name, a named individual (beyond the site owner, Jake Shaw),
 a named team, a named internal project/product that doesn't appear in `src/` or on the
