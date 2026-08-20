@@ -6,9 +6,20 @@
       "Read(**/.env.*.local)",
       "Read(**/.env.development)",
       "Read(**/.env.production)",
+      "Read(**/.env.*)",
+      "Read(**/.envrc)",
       "Read(**/id_rsa)",
       "Read(**/id_ed25519)",
-      "Read(**/*.pem)"
+      "Read(**/id_ecdsa)",
+      "Read(**/*.pem)",
+      "Read(**/*.pfx)",
+      "Read(**/*.p12)",
+      "Read(**/*.keystore)",
+      "Read(**/*.jks)",
+      "Read(**/.npmrc)",
+      "Read(**/.pypirc)",
+      "Read(**/.netrc)",
+      "Read(**/.aws/credentials)"
     ]
   },
   "hooks": {

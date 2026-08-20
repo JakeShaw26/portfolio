@@ -44,9 +44,12 @@ const ENV_FILE_ALLOWLIST = /\.env\.(example|sample|template|dist)$/i;
 
 // Restricted to names that actually read as a secret. A bare `CONTENTFUL_*`
 // match would also fire on `CONTENTFUL_ENVIRONMENT=master` and
-// `CONTENTFUL_SPACE_ID=` in the committed .env.example.
+// `CONTENTFUL_SPACE_ID=` in the committed .env.example. Case-insensitive and
+// underscore-optional so it catches both env-var style (CONTENTFUL_DELIVERY_TOKEN)
+// and a JS variable holding the same value (contentfulDeliveryToken) — the
+// original SCREAMING_SNAKE_CASE-only version missed the latter entirely.
 const CONTENTFUL_SECRET_ASSIGNMENT =
-  /\bCONTENTFUL_[A-Z0-9_]*(?:TOKEN|KEY|SECRET)\s*[:=]\s*["'`]?([^\s"'`]{6,})/;
+  /\bcontentful[a-z0-9_]*(?:token|key|secret)\s*[:=]\s*["'`]?([^\s"'`]{6,})/i;
 
 const HIGH_ENTROPY_TOKEN = /[A-Za-z0-9_\-+/]{24,}/g;
 // Random opaque tokens sit well above natural language / code identifiers,
@@ -85,14 +88,29 @@ function shannonEntropy(str) {
   return entropy;
 }
 
+// git SHA-1 (40 hex chars) and SHA-256 (64 hex chars) — the two lengths a
+// SHA-pinned GitHub Action ref or a git commit SHA actually appears at in
+// this repo's diffs.
+const HEX_SHA_LENGTHS = new Set([40, 64]);
+
 function isSuspiciousToken(token) {
   if (ALLOWLISTED_VALUES.has(token)) return false;
-  // Hex-only tokens (git SHAs, colour values, SHA-pinned Action refs — this
-  // repo pins every Action to a full commit SHA by policy) max out at 4
-  // bits/char by construction and are a dominant, benign source of long
-  // tokens in this repo's own diffs. Excluding them trades a theoretical
-  // hex-shaped secret for a large, real false-positive class.
-  if (/^[0-9a-f]+$/i.test(token)) return false;
+
+  if (/^[0-9a-f]+$/i.test(token)) {
+    // Hex-only tokens at exactly a SHA-1/SHA-256 length (git SHAs,
+    // SHA-pinned Action refs — this repo pins every Action to a full commit
+    // SHA by policy) are a dominant, benign source of long tokens in this
+    // repo's own diffs. Excluded only at those specific lengths.
+    if (HEX_SHA_LENGTHS.has(token.length)) return false;
+    // Any other hex-shaped token of qualifying length is flagged directly,
+    // not run through the entropy check below: a 16-symbol alphabet caps
+    // Shannon entropy at exactly 4.0 bits/char, so real hex secrets almost
+    // never reach the >= 4.0 threshold that check uses (it's calibrated for
+    // richer base62/base64-shaped tokens) — routing hex through it would
+    // silently exempt the entire class again in practice, just less overtly.
+    return true;
+  }
+
   if (/^\d+$/.test(token)) return false;
   return shannonEntropy(token) >= ENTROPY_THRESHOLD;
 }
@@ -117,15 +135,28 @@ function rangeDiffText(range) {
   return run(["diff", range]);
 }
 
+// Git's well-known empty-tree object hash — exists in every repo without
+// being written anywhere, since it's the hash of an empty tree object by
+// definition. Diffing against it yields the full accumulated diff of every
+// change up to a commit, which is what "scan this ref's full history"
+// actually requires.
+const EMPTY_TREE_SHA = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
+
 function mergeBaseRange(localSha, remoteRef) {
   try {
     const base = run(["merge-base", localSha, remoteRef]).trim();
     return `${base}..${localSha}`;
   } catch {
     // No common history with the reference branch (e.g. it doesn't exist
-    // locally either) — fall back to the full local history for this ref.
-    // Rare; only hit on a from-scratch push with no local main to compare.
-    return `${localSha}`;
+    // locally either) — diff from the empty tree so the full history of
+    // this ref is scanned. Rare; only hit on a from-scratch push with no
+    // local main to compare.
+    //
+    // NOT `${localSha}` alone: `git diff <single-sha>` compares that commit
+    // against the current working tree, not against the ref's own history —
+    // on a clean checkout that's an empty diff, so this fallback would
+    // silently scan nothing on exactly the case it exists to handle.
+    return `${EMPTY_TREE_SHA}..${localSha}`;
   }
 }
 
