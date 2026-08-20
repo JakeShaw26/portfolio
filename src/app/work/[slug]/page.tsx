@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/lib/content/projects";
-import { getAllProjects, getProjectBySlug } from "@/lib/cms/projects";
+import { getAllProjects } from "@/lib/cms/projects";
 
 const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
 
@@ -25,7 +25,8 @@ export async function generateMetadata({
   params,
 }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
+  const projects = await getAllProjects();
+  const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
 
   return {
@@ -36,9 +37,17 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
+  const projects = await getAllProjects();
+  const projectIndex = projects.findIndex((p) => p.slug === slug);
+  const project = projectIndex === -1 ? undefined : projects[projectIndex];
 
   if (!project) notFound();
+
+  // Pager wraps around: the last case study's "next" is the first, and vice versa.
+  const prevProject =
+    projects[(projectIndex - 1 + projects.length) % projects.length];
+  const nextProject = projects[(projectIndex + 1) % projects.length];
+  const showPager = projects.length > 1;
 
   return (
     <main id="main-content" className="px-6 py-28 sm:px-10 sm:py-40 lg:px-16">
@@ -117,6 +126,28 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           </Reveal>
         )}
       </div>
+
+      {showPager && (
+        <Reveal>
+          <nav
+            aria-label="Case study pager"
+            className="mt-16 flex max-w-2xl items-center justify-between gap-6 border-t border-line pt-8"
+          >
+            <Link
+              href={`/work/${prevProject.slug}`}
+              className="text-eyebrow font-semibold text-accent uppercase"
+            >
+              ← {prevProject.title}
+            </Link>
+            <Link
+              href={`/work/${nextProject.slug}`}
+              className="text-right text-eyebrow font-semibold text-accent uppercase"
+            >
+              {nextProject.title} →
+            </Link>
+          </nav>
+        </Reveal>
+      )}
     </main>
   );
 }
