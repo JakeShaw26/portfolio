@@ -106,10 +106,14 @@ export function TestimonialCarousel({
        * markup is still server-rendered.
        *
        * tabIndex is what makes it keyboard-scrollable (WCAG 2.1.1); without it
-       * the region is reachable by mouse only.
+       * the region is reachable by mouse only. jsx-a11y/no-noninteractive-tabindex
+       * flags this by default, but its own docs carve out exactly this case —
+       * a scrollable container needing tabindex="0" for browsers without native
+       * keyboard-focusable scroll containers — as the sanctioned exception.
        */}
       <ul
         ref={trackRef}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         aria-label="Quotes from colleagues"
         className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 motion-safe:scroll-smooth sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16"

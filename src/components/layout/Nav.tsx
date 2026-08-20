@@ -7,6 +7,12 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-sm">
       <div className="flex items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
+        {/*
+          `/` rather than `#` — a bare `#` fragment has no real navigable
+          target (jsx-a11y/anchor-is-valid). `next/link` rather than a plain
+          `<a>` because this is an internal same-site destination
+          (@next/next/no-html-link-for-pages).
+        */}
         <Link
           href="/"
           className="font-display text-xl font-semibold tracking-tight"
