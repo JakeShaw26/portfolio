@@ -67,3 +67,38 @@ jobs:
           # and muddies rotation, so it stays inline.
           CONTENTFUL_SPACE_ID: 98ddc4l0fmm4
           CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+
+      # Only Chromium, not all three engines Playwright ships by default —
+      # this is a single axe-core scan, not a cross-browser e2e suite.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Priced honestly (see test/a11y/site.spec.ts): axe-core is a new
+      # runtime dependency with its own CVE stream, on a pipeline that had
+      # none before this. `npm run test:a11y` starts `npm run start` against
+      # the `.next` build from the step above (no rebuild) and runs axe
+      # against the homepage plus one live work/experience detail page each.
+      #
+      # `continue-on-error: true`, deliberately: the first real run of this
+      # check against the live site found genuine, pre-existing findings
+      # (systemic color-contrast on translucent text tokens, one heading-
+      # order skip) that predate this workflow and are a content/design call,
+      # not something this ticket should silently paper over or unilaterally
+      # "fix" by force. Flipping this to blocking is the correct next step
+      # once those are triaged — until then, a hard-blocking CI check that's
+      # red from the day it's merged teaches people to ignore it, which is
+      # worse than not having it (see upgrade-deps/SKILL.md's identical
+      # argument against noisy Dependabot PRs). The job still runs and its
+      # output is visible on every PR either way.
+      #
+      # IMPORTANT CAVEAT, repeated wherever this check is referenced: a green
+      # run here is not proof of accessibility compliance. Automated tooling
+      # like axe-core catches roughly a third of real issues — see
+      # .claude/skills/a11y-audit/SKILL.md for the invariants (runtime
+      # motion-preference gating) it structurally cannot see.
+      - name: Accessibility check (axe-core)
+        run: npm run test:a11y
+        continue-on-error: true
+        env:
+          CONTENTFUL_SPACE_ID: 98ddc4l0fmm4
+          CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
