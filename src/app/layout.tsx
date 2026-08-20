@@ -64,7 +64,7 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans text-foreground print:bg-white print:text-black">
+      <body className="flex min-h-full flex-col font-sans text-foreground">
         <a href="#main-content" className="skip-link print:hidden">
           Skip to content
         </a>
