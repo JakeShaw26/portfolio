@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { site } from "@/lib/content/site";
 
 export function Footer() {
@@ -7,7 +9,9 @@ export function Footer() {
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        <span>Crafted with Next.js + GSAP</span>
+        <Link href="/colophon" className="transition-colors hover:text-accent">
+          Crafted with Next.js + GSAP
+        </Link>
       </div>
     </footer>
   );

@@ -35,6 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${siteUrl}/colophon`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
     // Case studies rank above experience entries: they are the pages worth
     // landing on directly.
     ...projects.map((project) => ({
