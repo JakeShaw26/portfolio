@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:assets": "node scripts/check-asset-metadata.mjs"
+    "check:assets": "node scripts/check-asset-metadata.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

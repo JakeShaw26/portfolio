@@ -1,0 +1,34 @@
+#!/bin/sh
+# Local verification gate for pushes to this repo.
+#
+# Deliberately NOT lint/typecheck/test/build: CI already covers those in
+# ~36s, and duplicating that locally on every push is the friction that
+# kills hooks. Two checks run here instead, in cheapest-first order:
+#
+#   1. check:assets   — dependency-free, catches an embedded-metadata leak
+#                        before anything slower runs.
+#   2. format:check    — exists as an npm script but CI does not run it at
+#                        all, so this hook is the only place it's enforced.
+#   3. check:secrets  — scans the commits actually being pushed for the
+#                        secret shape GitHub push protection doesn't catch
+#                        on this repo (see scripts/check-secrets.mjs).
+#
+# Every commit in this repo's history since its one PR has gone direct to
+# `main`, which means CI is a post-hoc alarm rather than a gate — this hook
+# is the only place these three can actually stand.
+#
+# Activate with: git config core.hooksPath .githooks
+# (per-clone, local-only — this does not run on anyone who hasn't set it)
+
+set -e
+
+echo "[pre-push] check:assets"
+npm run --silent check:assets
+
+echo "[pre-push] format:check"
+npm run --silent format:check
+
+echo "[pre-push] check:secrets"
+node scripts/check-secrets.mjs --pre-push
+
+echo "[pre-push] all checks passed"
