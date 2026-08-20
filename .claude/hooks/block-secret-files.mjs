@@ -27,7 +27,13 @@ process.stdin.on("end", () => {
   }
 
   const ti = input.tool_input ?? {};
-  const haystack = [ti.file_path, ti.path, ti.command, ti.pattern, ti.notebook_path]
+  const haystack = [
+    ti.file_path,
+    ti.path,
+    ti.command,
+    ti.pattern,
+    ti.notebook_path,
+  ]
     .filter((v) => typeof v === "string")
     .join(" ");
 
@@ -35,7 +41,10 @@ process.stdin.on("end", () => {
   // matching so `cat .env.example .env.local` still trips on the second
   // path rather than being waved through because the string happened to
   // contain an allowed name.
-  const scrubbed = haystack.replace(/\.env\.(example|sample|template|dist)\b/gi, "");
+  const scrubbed = haystack.replace(
+    /\.env\.(example|sample|template|dist)\b/gi,
+    "",
+  );
 
   const SECRET_PATTERNS = [
     /(^|[\s"'`=/\\])\.env\b/i, // .env, .env.local, .env.production
@@ -55,7 +64,7 @@ process.stdin.on("end", () => {
           permissionDecisionReason:
             "Blocked by this repo's block-secret-files hook: this call targets a " +
             "secrets file (.env*, private key, or credential file). Per AGENTS.md's " +
-            "\"Never read .env* files\" rule, never read these. Do NOT retry via " +
+            '"Never read .env* files" rule, never read these. Do NOT retry via ' +
             "another tool (Bash, Grep, a script) — that is the same violation. Ask " +
             "the person you're working with to paste only the specific non-secret " +
             "values you need.",
