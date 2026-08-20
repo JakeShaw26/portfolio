@@ -144,3 +144,39 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/*
+ * /cv print output, scoped to .cv-page so printing any other page on the
+ * site is unaffected. Global decorative chrome (atmosphere glow, cursor dot,
+ * skip link) is hidden inline via Tailwind's `print:hidden` where it's
+ * rendered; what's left here is what can't be expressed as a utility class —
+ * the page box itself, and expanding link hrefs inline since a printout has
+ * no way to follow a link.
+ *
+ * No `@page` size/margin override: `@page` cannot be scoped by a class
+ * selector (it's a page-box rule, not an element rule), so adding one here
+ * would size every printed page on the site, not just this one. The
+ * browser's own print defaults apply instead.
+ */
+@media print {
+  .cv-page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: black;
+  }
+
+  .cv-page a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* mailto: excluded — the visible text is already the full address. */
+  .cv-page a[href]:not([href^="mailto:"])::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    font-weight: 400;
+    color: var(--muted);
+  }
+}

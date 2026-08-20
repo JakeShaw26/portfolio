@@ -53,7 +53,7 @@ export function Cursor() {
     <div
       ref={dotRef}
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0 z-[100] h-3 w-3 rounded-full bg-accent mix-blend-difference"
+      className="pointer-events-none fixed top-0 left-0 z-[100] h-3 w-3 rounded-full bg-accent mix-blend-difference print:hidden"
     />
   );
 }

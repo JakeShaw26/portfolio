@@ -27,6 +27,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 1,
     },
+    // The CV is a standalone summary of everything below it — ranks under
+    // the homepage but above individual case studies/entries.
+    {
+      url: `${siteUrl}/cv`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/colophon`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
     // Case studies rank above experience entries: they are the pages worth
     // landing on directly.
     ...projects.map((project) => ({

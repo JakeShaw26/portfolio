@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
 import { site } from "@/lib/content/site";
+import { ogPalette } from "@/lib/og/palette";
 
 export const alt = `${site.name} — ${site.role}`;
 export const size = { width: 1200, height: 630 };
@@ -19,10 +20,9 @@ export default function OpengraphImage() {
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "80px",
-        background: "#f7efe2",
-        backgroundImage:
-          "radial-gradient(900px 900px at 85% 5%, #f3c57b 0%, transparent 60%), radial-gradient(700px 700px at 5% 95%, #e68a5c 0%, transparent 60%)",
-        color: "#2b2018",
+        background: ogPalette.cream,
+        backgroundImage: `radial-gradient(900px 900px at 85% 5%, ${ogPalette.amber} 0%, transparent 60%), radial-gradient(700px 700px at 5% 95%, ${ogPalette.terracotta} 0%, transparent 60%)`,
+        color: ogPalette.ink,
         fontFamily: "serif",
       }}
     >
@@ -34,11 +34,11 @@ export default function OpengraphImage() {
           fontSize: 26,
           letterSpacing: 4,
           textTransform: "uppercase",
-          color: "#c2502e",
+          color: ogPalette.accent,
         }}
       >
         <span>{site.role}</span>
-        <span style={{ width: 60, height: 2, background: "#c2502e" }} />
+        <span style={{ width: 60, height: 2, background: ogPalette.accent }} />
         <span>{site.location}</span>
       </div>
 
@@ -51,7 +51,7 @@ export default function OpengraphImage() {
             fontSize: 40,
             lineHeight: 1.2,
             maxWidth: 900,
-            color: "#8a7561",
+            color: ogPalette.muted,
             fontFamily: "sans-serif",
           }}
         >
