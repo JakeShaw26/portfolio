@@ -24,7 +24,7 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <CtaLink href="#contact" size="sm">
+        <CtaLink href="/#contact" size="sm">
           Say hello
         </CtaLink>
       </div>

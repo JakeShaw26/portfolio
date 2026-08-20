@@ -1,18 +1,11 @@
 import type { ReactNode } from "react";
 
-import { Nav } from "@/components/layout/Nav";
-import { Footer } from "@/components/layout/Footer";
+import { DetailLayout } from "@/components/layout/DetailLayout";
 
 export default function ExperienceLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  return (
-    <>
-      <Nav />
-      {children}
-      <Footer />
-    </>
-  );
+  return <DetailLayout>{children}</DetailLayout>;
 }
