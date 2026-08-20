@@ -167,7 +167,7 @@ function scanFileNames(fileNames) {
   return hits;
 }
 
-function scanDiffText(diffText, skipFiles) {
+function scanDiffText(diffText) {
   const hits = [];
   let currentFile = null;
   let skipCurrent = false;
