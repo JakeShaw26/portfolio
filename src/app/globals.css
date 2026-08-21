@@ -8,8 +8,18 @@
   --background: #f7efe2;
   --surface: #fff8ec;
   --foreground: #2b2018;
-  --muted: #8a7561;
-  --accent: #c2502e;
+  /*
+   * --muted and --accent are darkened from the original GILDED AIR values
+   * (#8a7561, #c2502e) — those read fine to the eye but landed at ~3.8:1 and
+   * ~4.1:1 against --background, both under WCAG AA's 4.5:1 for normal text.
+   * Same hue, same "warm taupe" / "terracotta" identity, just enough darker
+   * to clear 4.5:1 with margin (~5.6:1 / ~5.8:1) against both --background
+   * and --surface. Found by axe-core (test/a11y/site.spec.ts) as a systemic
+   * finding across nearly every page — these are the only two tokens used
+   * for body/label text everywhere, so fixing them here fixes it everywhere.
+   */
+  --muted: #6f5c46;
+  --accent: #9c3f22;
   --glow-1: #f3c57b;
   --glow-2: #e68a5c;
   --glow-3: #fbe8cb;

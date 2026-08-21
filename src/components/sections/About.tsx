@@ -115,11 +115,13 @@ export function About() {
         {/* Wraps on mobile, where three side-by-side facts would be too cramped. */}
         <dl className="flex flex-wrap gap-x-10 gap-y-6 text-base text-muted md:col-span-4 md:col-start-9 md:row-start-1 md:flex-col md:gap-6 md:self-end">
           <div>
-            <dt className="text-eyebrow text-foreground/50 uppercase">Based</dt>
+            {/* /65 not /50 — 50% opacity landed at ~3.1:1 against
+                --background, below WCAG AA's 4.5:1 for this size text. */}
+            <dt className="text-eyebrow text-foreground/65 uppercase">Based</dt>
             <dd className="mt-1 text-foreground">{site.location}</dd>
           </div>
           <div>
-            <dt className="text-eyebrow text-foreground/50 uppercase">
+            <dt className="text-eyebrow text-foreground/65 uppercase">
               Status
             </dt>
             <dd className="mt-1 text-accent">
@@ -127,7 +129,7 @@ export function About() {
             </dd>
           </div>
           <div>
-            <dt className="text-eyebrow text-foreground/50 uppercase">Focus</dt>
+            <dt className="text-eyebrow text-foreground/65 uppercase">Focus</dt>
             <dd className="mt-1 text-foreground">
               Frontend · AI products · Accessibility · Full-stack JavaScript
             </dd>

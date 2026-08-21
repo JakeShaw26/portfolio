@@ -16,6 +16,18 @@ import { expect, test, type Page } from "@playwright/test";
  * static JSX patterns this duplicates less well than a linter would.
  */
 
+test.beforeEach(async ({ page }) => {
+  // Without this, above-the-fold content (e.g. /work/[slug]'s hero block)
+  // triggers its GSAP entrance fade immediately on mount, and axe can land
+  // mid-tween — a transient low-opacity frame that reads as a color-contrast
+  // violation even though the settled state is fine. Reduced-motion is the
+  // deterministic, race-free state to scan: gsap.matchMedia in Reveal.tsx
+  // skips the animation entirely under this preference, so content renders
+  // at its final styles from first paint. It's also the more representative
+  // target — this is exactly the state motion-sensitive users get.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+});
+
 async function assertNoViolations(page: Page, label: string) {
   const results = await new AxeBuilder({ page }).analyze();
 
