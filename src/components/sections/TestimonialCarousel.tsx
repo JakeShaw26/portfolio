@@ -46,12 +46,25 @@ export function TestimonialCarousel({
      * dropped and the end of the track becomes the final dot, where
      * `last:snap-end` parks the last card. That naturally yields fewer dots
      * than cards on desktop and one dot per card on mobile.
+     *
+     * Once three or more cards already fit on screen, a dot for every single
+     * card is a one-card nudge that barely changes what's visible. Step two
+     * cards at a time in that regime so each dot represents a real page turn;
+     * narrower layouts (where every card matters) keep one dot per card.
      */
     const remeasure = () => {
       const cards = Array.from(track.children) as HTMLElement[];
       if (cards.length === 0) return;
       const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      const cardStep =
+        cards.length > 1
+          ? snapPositionOf(cards[1]) - snapPositionOf(cards[0])
+          : 0;
+      const visibleCards =
+        cardStep > 0 ? Math.floor(track.clientWidth / cardStep) : 1;
+      const step = visibleCards >= 3 ? 2 : 1;
       snapPoints = cards
+        .filter((_, index) => index % step === 0)
         .map(snapPositionOf)
         .filter((position) => position < maxScroll - 1);
       snapPoints.push(maxScroll);
