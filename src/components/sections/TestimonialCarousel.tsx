@@ -14,105 +14,101 @@ export function TestimonialCarousel({
   testimonials: Testimonial[];
 }) {
   const trackRef = useRef<HTMLUListElement>(null);
+  // Scroll positions, not cards: the single source of truth for both how many
+  // dots there are and which one is active, so a click always round-trips.
+  const [positions, setPositions] = useState<number[]>(() =>
+    testimonials.map(() => 0),
+  );
   const [active, setActive] = useState(0);
-  const [spacerWidth, setSpacerWidth] = useState(0);
-
-  // Real cards only — excludes the trailing spacer `<li>` below, which is
-  // aria-hidden precisely so it can double as the marker this filters on.
-  const cardsOf = (track: HTMLUListElement) =>
-    Array.from(
-      track.querySelectorAll(":scope > li:not([aria-hidden])"),
-    ) as HTMLElement[];
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
     let frame = 0;
+    let snapPoints: number[] = [];
+
+    /*
+     * The scrollLeft at which this card ends up start-aligned — the position
+     * the browser's own scroll-snap settles on. scroll-padding, not padding,
+     * is what displaces a snap position, so reading it keeps this correct
+     * however the track's gutter ends up being expressed.
+     */
+    const snapPositionOf = (card: HTMLElement) =>
+      card.getBoundingClientRect().left -
+      track.getBoundingClientRect().left -
+      (parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0) +
+      track.scrollLeft;
+
+    /*
+     * With several cards in view the trailing ones can never be start-aligned
+     * — the track runs out of scroll first — so their snap positions are
+     * dropped and the end of the track becomes the final dot, where
+     * `last:snap-end` parks the last card. That naturally yields fewer dots
+     * than cards on desktop and one dot per card on mobile.
+     */
+    const remeasure = () => {
+      const cards = Array.from(track.children) as HTMLElement[];
+      if (cards.length === 0) return;
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      snapPoints = cards
+        .map(snapPositionOf)
+        .filter((position) => position < maxScroll - 1);
+      snapPoints.push(maxScroll);
+      setPositions(snapPoints);
+    };
 
     const measure = () => {
       frame = 0;
-      const cards = cardsOf(track);
-      if (cards.length === 0) return;
-
-      const trackLeft = track.getBoundingClientRect().left;
       let nearest = 0;
       let shortest = Infinity;
-
-      cards.forEach((card, index) => {
-        const distance = Math.abs(
-          card.getBoundingClientRect().left - trackLeft,
-        );
+      snapPoints.forEach((position, index) => {
+        const distance = Math.abs(position - track.scrollLeft);
         if (distance < shortest) {
           shortest = distance;
           nearest = index;
         }
       });
-
       setActive(nearest);
-    };
-
-    /*
-     * More than one card is visible at desktop widths, so without this the
-     * track runs out of scrollable distance before the last card's own
-     * start-aligned position — its dot (and the one before it, with enough
-     * cards) becomes permanently unreachable, since "nearest to start" above
-     * never fires for a card that can never actually reach the start. Sizing
-     * this spacer to the leftover space after the last card fills the view
-     * extends scrollWidth just enough that the last card CAN be scrolled
-     * flush with the start, exactly like every other card.
-     */
-    const updateSpacer = () => {
-      const cards = cardsOf(track);
-      const lastCard = cards[cards.length - 1];
-      if (!lastCard) return;
-      setSpacerWidth(Math.max(0, track.clientWidth - lastCard.offsetWidth));
     };
 
     const schedule = () => {
       if (frame === 0) frame = requestAnimationFrame(measure);
     };
 
-    const onResize = () => {
-      updateSpacer();
+    /*
+     * ResizeObserver, not a window resize listener: the track's own box can
+     * change without the window's (scrollbar gutter, container relayout,
+     * zoom), and a snap-point measurement left stale across one of those is
+     * exactly what left the trailing dots unreachable. It also fires once on
+     * observe, so the initial layout is covered without a separate call.
+     */
+    const observer = new ResizeObserver(() => {
+      remeasure();
       schedule();
-    };
-
-    updateSpacer();
-    measure();
+    });
+    observer.observe(track);
     track.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", onResize);
 
     return () => {
       if (frame !== 0) cancelAnimationFrame(frame);
+      observer.disconnect();
       track.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", onResize);
     };
   }, [testimonials.length]);
 
-  const goTo = useCallback((index: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = cardsOf(track)[index];
-    if (!card) return;
-
-    /*
-     * scrollBy on the track rather than card.scrollIntoView, which also scrolls
-     * the page vertically to reach the element. The delta only has to be close:
-     * scroll-snap is mandatory, so the browser settles onto the exact snap
-     * point afterwards.
-     */
-    const padding = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-    const delta =
-      card.getBoundingClientRect().left -
-      track.getBoundingClientRect().left -
-      padding;
-
-    track.scrollBy({
-      left: delta,
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-    });
-  }, []);
+  const goTo = useCallback(
+    (index: number) => {
+      const track = trackRef.current;
+      const position = positions[index];
+      if (!track || position === undefined) return;
+      track.scrollTo({
+        left: position,
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
+    },
+    [positions],
+  );
 
   return (
     <>
@@ -133,12 +129,12 @@ export function TestimonialCarousel({
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         aria-label="Quotes from colleagues"
-        className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 motion-safe:scroll-smooth sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16"
+        className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 motion-safe:scroll-smooth scroll-pl-6 scroll-pr-6 sm:-mx-10 sm:px-10 sm:scroll-pl-10 sm:scroll-pr-10 lg:-mx-16 lg:px-16 lg:scroll-pl-16 lg:scroll-pr-16"
       >
         {testimonials.map((testimonial) => (
           <li
             key={testimonial.index}
-            className="w-[80vw] max-w-md shrink-0 snap-start sm:w-[26rem]"
+            className="w-[80vw] max-w-md shrink-0 snap-start last:snap-end sm:w-[26rem]"
           >
             <figure className="flex h-full flex-col justify-between rounded-3xl border border-line bg-surface p-8">
               <blockquote className="font-display text-lg leading-relaxed italic">
@@ -150,13 +146,6 @@ export function TestimonialCarousel({
             </figure>
           </li>
         ))}
-        {/*
-         * Not a real card — exists purely to extend scrollWidth so the last
-         * card can reach the start-aligned position (see the spacer comment
-         * above `updateSpacer`). aria-hidden both keeps it out of assistive
-         * tech and is what cardsOf() filters on to exclude it from indexing.
-         */}
-        <li aria-hidden style={{ width: spacerWidth }} className="shrink-0" />
       </ul>
 
       {/*
@@ -164,30 +153,32 @@ export function TestimonialCarousel({
        * a mouse-wheel user had. Padding gives each dot a 24px+ hit area
        * (WCAG 2.5.8) while the visible dot stays small.
        */}
-      <div
-        role="group"
-        aria-label="Jump to a quote"
-        className="mt-8 flex justify-center gap-1"
-      >
-        {testimonials.map((testimonial, index) => (
-          <button
-            key={testimonial.index}
-            type="button"
-            onClick={() => goTo(index)}
-            aria-label={`Quote ${index + 1} of ${testimonials.length}`}
-            aria-current={index === active ? "true" : undefined}
-            className="group cursor-pointer p-2"
-          >
-            <span
-              className={`block h-2 rounded-full transition-all duration-300 motion-reduce:transition-none ${
-                index === active
-                  ? "w-6 bg-accent"
-                  : "w-2 bg-line group-hover:bg-accent/40"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
+      {positions.length > 1 && (
+        <div
+          role="group"
+          aria-label="Jump to a quote"
+          className="mt-8 flex justify-center gap-1"
+        >
+          {positions.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => goTo(index)}
+              aria-label={`View ${index + 1} of ${positions.length}`}
+              aria-current={index === active ? "true" : undefined}
+              className="group cursor-pointer p-2"
+            >
+              <span
+                className={`block h-2 rounded-full transition-all duration-300 motion-reduce:transition-none ${
+                  index === active
+                    ? "w-6 bg-accent"
+                    : "w-2 bg-line group-hover:bg-accent/40"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </>
   );
 }
