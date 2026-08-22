@@ -19,3 +19,18 @@ export type Project = {
   /** Case study body. Falls back to `summary` on the detail page when omitted. */
   caseStudy?: ProjectSection[];
 };
+
+/**
+ * `<ViewTransition name>` pairs must match exactly between the project card
+ * (`ProjectShowcase`) and the case-study hero (`/work/[slug]/page.tsx`) for
+ * the browser to morph one into the other. Centralised here so the two
+ * call sites can't drift into mismatched names, which would silently fall
+ * back to a hard cut with no error.
+ */
+export function projectImageViewTransitionName(slug: string) {
+  return `project-image-${slug}`;
+}
+
+export function projectTitleViewTransitionName(slug: string) {
+  return `project-title-${slug}`;
+}

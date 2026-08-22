@@ -54,6 +54,12 @@ export function Cursor() {
       ref={dotRef}
       aria-hidden
       className="pointer-events-none fixed top-0 left-0 z-[100] h-3 w-3 rounded-full bg-accent mix-blend-difference print:hidden"
+      // Same reasoning as Nav's header and the atmosphere layer (see
+      // globals.css): this persists across the root layout, but the
+      // browser's view-transition snapshot still captures it by pixel, and
+      // an un-named fixed element can flash if its GSAP-driven transform
+      // happens to differ between the old and new snapshot moments.
+      style={{ viewTransitionName: "cursor-dot" }}
     />
   );
 }

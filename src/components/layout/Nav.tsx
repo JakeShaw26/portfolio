@@ -5,7 +5,14 @@ import { CtaLink } from "@/components/ui/CtaLink";
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-sm">
+    <header
+      className="sticky top-0 z-50 backdrop-blur-sm"
+      // Named so the view transition triggered by clicking a project card
+      // pulls the header into its own snapshot group instead of leaving it
+      // in the default root group (see globals.css) — otherwise it flashes/
+      // duplicates during the card -> case-study morph.
+      style={{ viewTransitionName: "site-header" }}
+    >
       <div className="flex items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
         {/*
           `/` rather than `#` — a bare `#` fragment has no real navigable

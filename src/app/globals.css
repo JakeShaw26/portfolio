@@ -124,6 +124,78 @@ body {
   }
 }
 
+/*
+ * View Transitions — project card -> case study morph (Ticket 05).
+ *
+ * `::view-transition-*` pseudo-elements live in their own overlay tree, not
+ * the regular document, so the universal-selector safety net above (`*`)
+ * never reaches them. They need their own reduced-motion rule.
+ *
+ * This is the exact recipe Next's own view-transitions guide recommends:
+ * zeroing every transition-pseudo's animation makes the swap instant, which
+ * is the same "no motion" result as not running a transition at all — so
+ * under reduced motion the morph is skipped entirely rather than just
+ * "shortened".
+ */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/*
+ * Only the project image and title (named per-project in ProjectShowcase and
+ * /work/[slug]/page.tsx) are meant to morph. Everything else on the page is
+ * unnamed and therefore falls into the browser's default "root" snapshot,
+ * which crossfades by default — but decision #2 on Ticket 05 keeps chrome
+ * entering exactly as it does today (Reveal's own GSAP fades), so the root
+ * crossfade is switched off to avoid double animation.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/*
+ * The sticky Nav, the fixed atmosphere glow, and the cursor dot aren't part
+ * of the morph, but simply being unnamed isn't enough to protect them: the
+ * root snapshot above is a screenshot of the *entire* document, and if the
+ * old/new pages differ in height or scroll offset, fixed/sticky chrome can
+ * shift within that screenshot and appear to flash or double up while the
+ * root crossfade (or a future change to it) runs. Each one is given a
+ * stable `view-transition-name` (Nav.tsx, layout.tsx, Cursor.tsx) so the
+ * browser pulls it into its own group instead, and that group's animation is
+ * killed here so it simply stays put — the same "anchor the header" recipe
+ * from Next's view-transitions guide.
+ */
+::view-transition-group(site-header),
+::view-transition-group(atmosphere),
+::view-transition-group(cursor-dot) {
+  animation: none;
+}
+::view-transition-old(site-header),
+::view-transition-old(atmosphere),
+::view-transition-old(cursor-dot) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(atmosphere),
+::view-transition-new(cursor-dot) {
+  animation: none;
+}
+
+/*
+ * While a transition plays, the view-transition overlay captures pointer
+ * events, which would otherwise swallow clicks on the live page underneath
+ * for the duration of the (short) animation.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
 /* Amber atmosphere — fixed warm glow behind all content. */
 .atmosphere {
   position: fixed;
