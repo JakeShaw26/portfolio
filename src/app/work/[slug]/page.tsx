@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ViewTransition } from "react";
 
 import { CtaLink } from "@/components/ui/CtaLink";
 import { Reveal } from "@/components/motion/Reveal";
@@ -69,8 +68,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         <div>
           {/*
             The h1 sits between two Reveal instances rather than inside one
-            shared wrapper (as the eyebrow/pills/CTA block used to be). It's
-            now driven by the ViewTransition morph from the project card
+            shared wrapper (as the eyebrow/pills/CTA block used to be). It
+            carries a view-transition-name matching its card counterpart
             instead of Reveal's GSAP fade+lift: Reveal tweens opacity/y on its
             wrapping div via a ScrollTrigger that fires on mount (the hero is
             above the fold), which would race the browser's view-transition
@@ -84,11 +83,16 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             </span>
           </Reveal>
 
-          <ViewTransition name={projectTitleViewTransitionName(project.slug)}>
-            <h1 className="mt-3 font-display text-h2 font-semibold">
-              {project.title}
-            </h1>
-          </ViewTransition>
+          <h1
+            className="mt-3 font-display text-h2 font-semibold"
+            style={{
+              viewTransitionName: projectTitleViewTransitionName(
+                project.slug,
+              ),
+            }}
+          >
+            {project.title}
+          </h1>
 
           <Reveal>
             <ul className="mt-8 flex flex-wrap gap-2">
@@ -123,18 +127,21 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         {/*
           Plain div, not Reveal, for the same reason as the h1 above: this
           image is the other half of the morph pair, so its entrance is the
-          ViewTransition, not a GSAP fade+lift racing the snapshot.
+          view transition, not a GSAP fade+lift racing the snapshot.
         */}
-        <div className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] lg:mx-0">
-          <ViewTransition name={projectImageViewTransitionName(project.slug)}>
-            <Image
-              src={project.image ?? PLACEHOLDER_IMAGE}
-              alt={project.imageAlt ?? `${project.title} screenshot`}
-              fill
-              className="object-contain p-8"
-              sizes="(min-width: 1024px) 28rem, 100vw"
-            />
-          </ViewTransition>
+        <div
+          className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] lg:mx-0"
+          style={{
+            viewTransitionName: projectImageViewTransitionName(project.slug),
+          }}
+        >
+          <Image
+            src={project.image ?? PLACEHOLDER_IMAGE}
+            alt={project.imageAlt ?? `${project.title} screenshot`}
+            fill
+            className="object-contain p-8"
+            sizes="(min-width: 1024px) 28rem, 100vw"
+          />
         </div>
       </div>
 

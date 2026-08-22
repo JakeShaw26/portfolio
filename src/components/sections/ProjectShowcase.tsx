@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ViewTransition } from "react";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { StackMotion } from "@/components/motion/StackMotion";
+import { ViewTransitionLink } from "@/components/motion/ViewTransitionLink";
 import { getAllProjects } from "@/lib/cms/projects";
 import {
   projectImageViewTransitionName,
@@ -41,31 +40,37 @@ export async function ProjectShowcase() {
             style={{ top: `${6 + i * 0.75}rem` }}
           >
             <article className="grid gap-6 rounded-3xl border border-line bg-surface p-5 shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] sm:p-8 md:grid-cols-2">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-background">
-                <ViewTransition
-                  name={projectImageViewTransitionName(project.slug)}
-                >
-                  <Image
-                    src={project.image ?? PLACEHOLDER_IMAGE}
-                    alt={project.imageAlt ?? `${project.title} screenshot`}
-                    fill
-                    className="object-contain p-10"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                  />
-                </ViewTransition>
+              <div
+                className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-background"
+                style={{
+                  viewTransitionName: projectImageViewTransitionName(
+                    project.slug,
+                  ),
+                }}
+              >
+                <Image
+                  src={project.image ?? PLACEHOLDER_IMAGE}
+                  alt={project.imageAlt ?? `${project.title} screenshot`}
+                  fill
+                  className="object-contain p-10"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </div>
 
               <div className="flex flex-col justify-center">
                 <span className="text-eyebrow text-muted uppercase">
                   {project.year} · {project.role}
                 </span>
-                <ViewTransition
-                  name={projectTitleViewTransitionName(project.slug)}
+                <h3
+                  className="mt-3 font-display text-h3 font-semibold"
+                  style={{
+                    viewTransitionName: projectTitleViewTransitionName(
+                      project.slug,
+                    ),
+                  }}
                 >
-                  <h3 className="mt-3 font-display text-h3 font-semibold">
-                    {project.title}
-                  </h3>
-                </ViewTransition>
+                  {project.title}
+                </h3>
                 <p className="mt-4 leading-relaxed text-muted">
                   {project.summary}
                 </p>
@@ -79,12 +84,12 @@ export async function ProjectShowcase() {
                     </li>
                   ))}
                 </ul>
-                <Link
+                <ViewTransitionLink
                   href={`/work/${project.slug}`}
                   className="mt-7 text-sm font-medium text-accent transition-opacity hover:opacity-70"
                 >
                   View case study →
-                </Link>
+                </ViewTransitionLink>
               </div>
             </article>
           </div>

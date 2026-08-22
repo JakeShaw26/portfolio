@@ -40,13 +40,19 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     // This component lives in the root layout, so it persists (and keeps the
     // same Lenis instance) across client-side navigations — only `children`
     // swaps. Lenis interpolates toward its own internal scroll target every
-    // rAF tick; without this, a card -> case-study navigation lands with
-    // Next's router at the top of the new page, but Lenis still remembers
-    // the old page's (likely non-zero, deep-scrolled) target and pulls the
-    // view back toward it on the very next frame — exactly the "transition
-    // starts from the wrong visual offset" risk the ticket calls out.
-    // `immediate: true` snaps rather than smooth-scrolling to 0, since this
-    // is a hard reset for a new page, not a user-initiated scroll.
+    // rAF tick; without this, a plain route change lands with Next's router
+    // at the top of the new page, but Lenis still remembers the old page's
+    // (likely non-zero, deep-scrolled) target and pulls the view back toward
+    // it on the very next frame. `immediate: true` snaps rather than
+    // smooth-scrolling to 0, since this is a hard reset for a new page, not
+    // a user-initiated scroll.
+    //
+    // Skipped whenever the destination carries a hash (e.g. the case-study
+    // pages' "← Back to work" link to `/#work`): forcing scroll to 0 here
+    // would fight the browser/Next's own hash-anchor scroll on the very same
+    // next frame, hard-cutting straight past the section the link is meant
+    // to land on.
+    if (window.location.hash) return;
     lenisRef.current?.scrollTo(0, { immediate: true });
   }, [pathname]);
 
