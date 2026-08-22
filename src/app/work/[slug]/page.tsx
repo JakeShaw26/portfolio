@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 
 import { CtaLink } from "@/components/ui/CtaLink";
 import { Reveal } from "@/components/motion/Reveal";
-import type { Project } from "@/lib/content/projects";
+import {
+  projectImageViewTransitionName,
+  projectTitleViewTransitionName,
+  type Project,
+} from "@/lib/content/projects";
 import { getAllProjects } from "@/lib/cms/projects";
 
 const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
@@ -61,43 +65,76 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       </Reveal>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-        <Reveal>
-          <span className="block text-eyebrow text-muted uppercase">
-            {project.year} · {project.role}
-          </span>
-          <h1 className="mt-3 font-display text-h2 font-semibold">
+        <div>
+          {/*
+            The h1 sits between two Reveal instances rather than inside one
+            shared wrapper (as the eyebrow/pills/CTA block used to be). It
+            carries a view-transition-name matching its card counterpart
+            instead of Reveal's GSAP fade+lift: Reveal tweens opacity/y on its
+            wrapping div via a ScrollTrigger that fires on mount (the hero is
+            above the fold), which would race the browser's view-transition
+            snapshot and get captured mid-fade or invisible, undermining the
+            morph. Splitting keeps the eyebrow and pills/CTA fading in as
+            before, just as two adjacent blocks instead of one.
+          */}
+          <Reveal>
+            <span className="block text-eyebrow text-muted uppercase">
+              {project.year} · {project.role}
+            </span>
+          </Reveal>
+
+          <h1
+            className="mt-3 font-display text-h2 font-semibold"
+            style={{
+              viewTransitionName: projectTitleViewTransitionName(
+                project.slug,
+              ),
+            }}
+          >
             {project.title}
           </h1>
 
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <li
-                key={tech}
-                className="rounded-full border border-line px-3 py-1 text-sm text-muted"
-              >
-                {tech}
-              </li>
-            ))}
-          </ul>
+          <Reveal>
+            <ul className="mt-8 flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-full border border-line px-3 py-1 text-sm text-muted"
+                >
+                  {tech}
+                </li>
+              ))}
+            </ul>
 
-          {project.liveUrl && (
-            <div className="mt-8">
-              <CtaLink
-                href={project.liveUrl}
-                variant="secondary"
-                size="sm"
-                external
-              >
-                Visit live site
-              </CtaLink>
-              <p className="mt-2 text-xs text-muted">
-                Hosted on the client&apos;s site, not one I control.
-              </p>
-            </div>
-          )}
-        </Reveal>
+            {project.liveUrl && (
+              <div className="mt-8">
+                <CtaLink
+                  href={project.liveUrl}
+                  variant="secondary"
+                  size="sm"
+                  external
+                >
+                  Visit live site
+                </CtaLink>
+                <p className="mt-2 text-xs text-muted">
+                  Hosted on the client&apos;s site, not one I control.
+                </p>
+              </div>
+            )}
+          </Reveal>
+        </div>
 
-        <Reveal className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] lg:mx-0">
+        {/*
+          Plain div, not Reveal, for the same reason as the h1 above: this
+          image is the other half of the morph pair, so its entrance is the
+          view transition, not a GSAP fade+lift racing the snapshot.
+        */}
+        <div
+          className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl bg-surface shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] lg:mx-0"
+          style={{
+            viewTransitionName: projectImageViewTransitionName(project.slug),
+          }}
+        >
           <Image
             src={project.image ?? PLACEHOLDER_IMAGE}
             alt={project.imageAlt ?? `${project.title} screenshot`}
@@ -105,7 +142,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             className="object-contain p-8"
             sizes="(min-width: 1024px) 28rem, 100vw"
           />
-        </Reveal>
+        </div>
       </div>
 
       <div className="mt-16 max-w-2xl space-y-12">

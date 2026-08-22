@@ -68,7 +68,17 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link print:hidden">
           Skip to content
         </a>
-        <div aria-hidden className="atmosphere print:hidden" />
+        {/*
+          Named for the same reason as Nav's header (see globals.css): pulls
+          this fixed full-viewport glow out of the view transition's default
+          root snapshot so it doesn't flash/double-expose during the card ->
+          case-study morph.
+        */}
+        <div
+          aria-hidden
+          className="atmosphere print:hidden"
+          style={{ viewTransitionName: "atmosphere" }}
+        />
         <AtmosphereDrift />
         <Cursor />
         <SmoothScroll>{children}</SmoothScroll>

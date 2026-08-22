@@ -1,9 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { StackMotion } from "@/components/motion/StackMotion";
+import { ViewTransitionLink } from "@/components/motion/ViewTransitionLink";
 import { getAllProjects } from "@/lib/cms/projects";
+import {
+  projectImageViewTransitionName,
+  projectTitleViewTransitionName,
+} from "@/lib/content/projects";
 
 const PLACEHOLDER_IMAGE = "/work/placeholder.svg";
 
@@ -36,7 +40,14 @@ export async function ProjectShowcase() {
             style={{ top: `${6 + i * 0.75}rem` }}
           >
             <article className="grid gap-6 rounded-3xl border border-line bg-surface p-5 shadow-[0_30px_80px_-40px_rgba(43,32,24,0.45)] sm:p-8 md:grid-cols-2">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-background">
+              <div
+                className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-background"
+                style={{
+                  viewTransitionName: projectImageViewTransitionName(
+                    project.slug,
+                  ),
+                }}
+              >
                 <Image
                   src={project.image ?? PLACEHOLDER_IMAGE}
                   alt={project.imageAlt ?? `${project.title} screenshot`}
@@ -50,7 +61,14 @@ export async function ProjectShowcase() {
                 <span className="text-eyebrow text-muted uppercase">
                   {project.year} · {project.role}
                 </span>
-                <h3 className="mt-3 font-display text-h3 font-semibold">
+                <h3
+                  className="mt-3 font-display text-h3 font-semibold"
+                  style={{
+                    viewTransitionName: projectTitleViewTransitionName(
+                      project.slug,
+                    ),
+                  }}
+                >
                   {project.title}
                 </h3>
                 <p className="mt-4 leading-relaxed text-muted">
@@ -66,12 +84,12 @@ export async function ProjectShowcase() {
                     </li>
                   ))}
                 </ul>
-                <Link
+                <ViewTransitionLink
                   href={`/work/${project.slug}`}
                   className="mt-7 text-sm font-medium text-accent transition-opacity hover:opacity-70"
                 >
                   View case study →
-                </Link>
+                </ViewTransitionLink>
               </div>
             </article>
           </div>
