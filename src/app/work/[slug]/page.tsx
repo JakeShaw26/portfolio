@@ -94,19 +94,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             {project.title}
           </h1>
 
-          <Reveal>
-            <ul className="mt-8 flex flex-wrap gap-2">
-              {project.stack.map((tech) => (
-                <li
-                  key={tech}
-                  className="rounded-full border border-line px-3 py-1 text-sm text-muted"
-                >
-                  {tech}
-                </li>
-              ))}
-            </ul>
-
-            {project.liveUrl && (
+          {project.liveUrl && (
+            <Reveal>
               <div className="mt-8">
                 <CtaLink
                   href={project.liveUrl}
@@ -120,8 +109,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   Hosted on the client&apos;s site, not one I control.
                 </p>
               </div>
-            )}
-          </Reveal>
+            </Reveal>
+          )}
         </div>
 
         {/*
@@ -145,23 +134,104 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         </div>
       </div>
 
-      <div className="mt-16 max-w-2xl space-y-12">
-        {project.caseStudy ? (
-          project.caseStudy.map((section) => (
-            <Reveal key={section.heading}>
-              <h2 className="font-display text-h3 font-semibold">
-                {section.heading}
-              </h2>
-              <p className="mt-4 leading-relaxed text-muted">{section.body}</p>
+      <div className="mt-16 grid gap-10 lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-16">
+        {/*
+          `items-start` on the grid keeps this column's height at its own
+          content instead of stretching to match the prose column, which is
+          what lets `sticky` clamp to the prose's height rather than the
+          viewport: the nearest scrolling ancestor here is the document, so
+          the rail unsticks once it hits the bottom of this grid row (i.e.
+          the end of the prose), not one viewport-height down a short case
+          study.
+        */}
+        <Reveal className="lg:sticky lg:top-24">
+          <dl className="space-y-6">
+            <div>
+              <dt className="text-eyebrow font-semibold text-accent uppercase">
+                Year
+              </dt>
+              <dd className="mt-1 text-foreground">{project.year}</dd>
+            </div>
+            <div>
+              <dt className="text-eyebrow font-semibold text-accent uppercase">
+                Role
+              </dt>
+              <dd className="mt-1 text-foreground">{project.role}</dd>
+            </div>
+            <div>
+              <dt className="text-eyebrow font-semibold text-accent uppercase">
+                Stack
+              </dt>
+              <dd className="mt-2">
+                <ul className="flex flex-wrap gap-2">
+                  {project.stack.map((tech) => (
+                    <li
+                      key={tech}
+                      className="rounded-full border border-line px-3 py-1 text-sm text-muted"
+                    >
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+            {project.liveUrl && (
+              <div>
+                <dt className="text-eyebrow font-semibold text-accent uppercase">
+                  Live
+                </dt>
+                <dd className="mt-1">
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-accent transition-opacity hover:opacity-70"
+                  >
+                    Visit site ↗
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </dd>
+              </div>
+            )}
+          </dl>
+        </Reveal>
+
+        <div className="max-w-2xl space-y-12">
+          {project.caseStudy ? (
+            project.caseStudy.map((section, i) => (
+              <div key={section.heading}>
+                <Reveal>
+                  <div className="flex items-center gap-3 text-base leading-none font-semibold tracking-[0.12em] text-accent uppercase">
+                    <span className="tabular-nums">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="h-px w-10 bg-accent/40" />
+                  </div>
+                  <h2 className="mt-3 font-display text-h3 font-semibold">
+                    {section.heading}
+                  </h2>
+                  <p className="mt-4 leading-relaxed text-muted">
+                    {section.body}
+                  </p>
+                </Reveal>
+
+                {i === 0 && project.pullQuote && (
+                  <Reveal className="mt-12">
+                    <blockquote className="font-display text-3xl leading-snug font-medium text-balance italic sm:text-4xl">
+                      &ldquo;{project.pullQuote}&rdquo;
+                    </blockquote>
+                  </Reveal>
+                )}
+              </div>
+            ))
+          ) : (
+            <Reveal>
+              <p className="text-lg leading-relaxed text-muted">
+                {project.summary}
+              </p>
             </Reveal>
-          ))
-        ) : (
-          <Reveal>
-            <p className="text-lg leading-relaxed text-muted">
-              {project.summary}
-            </p>
-          </Reveal>
-        )}
+          )}
+        </div>
       </div>
 
       {showPager && (

@@ -18,6 +18,12 @@ export type Project = {
   liveUrl?: string;
   /** Case study body. Falls back to `summary` on the detail page when omitted. */
   caseStudy?: ProjectSection[];
+  /**
+   * The sharpest decision line from the case study, rendered once at large
+   * scale after the first section. Only worth adding where a genuinely
+   * strong line exists — not every project needs one.
+   */
+  pullQuote?: string;
 };
 
 /**

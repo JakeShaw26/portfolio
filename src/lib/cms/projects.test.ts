@@ -16,6 +16,7 @@ describe("mapProject", () => {
       imageAlt: "Travelchapter logo",
       liveUrl: "https://example.com",
       caseStudy: [{ heading: "The problem", body: "Two companies merged." }],
+      pullQuote: "We shipped the merge without a single missed booking.",
     });
 
     expect(result).toEqual({
@@ -30,10 +31,11 @@ describe("mapProject", () => {
       imageAlt: "Travelchapter logo",
       liveUrl: "https://example.com",
       caseStudy: [{ heading: "The problem", body: "Two companies merged." }],
+      pullQuote: "We shipped the merge without a single missed booking.",
     });
   });
 
-  it("omits image, imageAlt, liveUrl and caseStudy when absent", () => {
+  it("omits image, imageAlt, liveUrl, caseStudy and pullQuote when absent", () => {
     const result = mapProject({
       slug: "jlr",
       index: "02",
@@ -48,6 +50,7 @@ describe("mapProject", () => {
     expect(result.imageAlt).toBeUndefined();
     expect(result.liveUrl).toBeUndefined();
     expect(result.caseStudy).toBeUndefined();
+    expect(result.pullQuote).toBeUndefined();
   });
 
   it("throws on a malformed caseStudy shape", () => {
