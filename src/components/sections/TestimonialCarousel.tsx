@@ -15,9 +15,14 @@ export function TestimonialCarousel({
 }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
+  const [spacerWidth, setSpacerWidth] = useState(0);
 
+  // Real cards only — excludes the trailing spacer `<li>` below, which is
+  // aria-hidden precisely so it can double as the marker this filters on.
   const cardsOf = (track: HTMLUListElement) =>
-    Array.from(track.children) as HTMLElement[];
+    Array.from(
+      track.querySelectorAll(":scope > li:not([aria-hidden])"),
+    ) as HTMLElement[];
 
   useEffect(() => {
     const track = trackRef.current;
@@ -29,17 +34,6 @@ export function TestimonialCarousel({
       frame = 0;
       const cards = cardsOf(track);
       if (cards.length === 0) return;
-
-      /*
-       * More than one card is visible at desktop widths, so the trailing cards
-       * can never reach the start edge — the track runs out of scroll first.
-       * Nearest-to-start alone would leave the last dots permanently dead, so
-       * the end of the track is special-cased to the last card.
-       */
-      if (track.scrollWidth - track.clientWidth - track.scrollLeft < 1) {
-        setActive(cards.length - 1);
-        return;
-      }
 
       const trackLeft = track.getBoundingClientRect().left;
       let nearest = 0;
@@ -58,18 +52,41 @@ export function TestimonialCarousel({
       setActive(nearest);
     };
 
+    /*
+     * More than one card is visible at desktop widths, so without this the
+     * track runs out of scrollable distance before the last card's own
+     * start-aligned position — its dot (and the one before it, with enough
+     * cards) becomes permanently unreachable, since "nearest to start" above
+     * never fires for a card that can never actually reach the start. Sizing
+     * this spacer to the leftover space after the last card fills the view
+     * extends scrollWidth just enough that the last card CAN be scrolled
+     * flush with the start, exactly like every other card.
+     */
+    const updateSpacer = () => {
+      const cards = cardsOf(track);
+      const lastCard = cards[cards.length - 1];
+      if (!lastCard) return;
+      setSpacerWidth(Math.max(0, track.clientWidth - lastCard.offsetWidth));
+    };
+
     const schedule = () => {
       if (frame === 0) frame = requestAnimationFrame(measure);
     };
 
+    const onResize = () => {
+      updateSpacer();
+      schedule();
+    };
+
+    updateSpacer();
     measure();
     track.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    window.addEventListener("resize", onResize);
 
     return () => {
       if (frame !== 0) cancelAnimationFrame(frame);
       track.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", onResize);
     };
   }, [testimonials.length]);
 
@@ -121,7 +138,7 @@ export function TestimonialCarousel({
         {testimonials.map((testimonial) => (
           <li
             key={testimonial.index}
-            className="w-[85vw] max-w-md shrink-0 snap-start sm:w-[26rem]"
+            className="w-[80vw] max-w-md shrink-0 snap-start sm:w-[26rem]"
           >
             <figure className="flex h-full flex-col justify-between rounded-3xl border border-line bg-surface p-8">
               <blockquote className="font-display text-lg leading-relaxed italic">
@@ -133,6 +150,13 @@ export function TestimonialCarousel({
             </figure>
           </li>
         ))}
+        {/*
+         * Not a real card — exists purely to extend scrollWidth so the last
+         * card can reach the start-aligned position (see the spacer comment
+         * above `updateSpacer`). aria-hidden both keeps it out of assistive
+         * tech and is what cardsOf() filters on to exclude it from indexing.
+         */}
+        <li aria-hidden style={{ width: spacerWidth }} className="shrink-0" />
       </ul>
 
       {/*
