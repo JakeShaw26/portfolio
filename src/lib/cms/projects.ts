@@ -23,6 +23,7 @@ export type WorkProjectFields = {
   imageAlt?: string;
   liveUrl?: string;
   caseStudy?: unknown;
+  pullQuote?: string;
 };
 
 /**
@@ -48,6 +49,7 @@ export function mapProject(fields: WorkProjectFields): Project {
     ...(fields.imageAlt !== undefined ? { imageAlt: fields.imageAlt } : {}),
     ...(fields.liveUrl !== undefined ? { liveUrl: fields.liveUrl } : {}),
     ...(caseStudy !== undefined ? { caseStudy } : {}),
+    ...(fields.pullQuote !== undefined ? { pullQuote: fields.pullQuote } : {}),
   };
 }
 
