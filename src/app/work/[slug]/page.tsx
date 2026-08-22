@@ -67,28 +67,19 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
         <div>
           {/*
-            The h1 sits between two Reveal instances rather than inside one
-            shared wrapper (as the eyebrow/pills/CTA block used to be). It
+            The h1 isn't wrapped in a Reveal, unlike the CTA below it: it
             carries a view-transition-name matching its card counterpart
-            instead of Reveal's GSAP fade+lift: Reveal tweens opacity/y on its
-            wrapping div via a ScrollTrigger that fires on mount (the hero is
-            above the fold), which would race the browser's view-transition
-            snapshot and get captured mid-fade or invisible, undermining the
-            morph. Splitting keeps the eyebrow and pills/CTA fading in as
-            before, just as two adjacent blocks instead of one.
+            instead of Reveal's GSAP fade+lift, since Reveal tweens opacity/y
+            on its wrapping div via a ScrollTrigger that fires on mount (the
+            hero is above the fold), which would race the browser's
+            view-transition snapshot and get captured mid-fade or invisible,
+            undermining the morph. Year/role now live only in the meta rail
+            below, not here, to avoid showing them twice on the page.
           */}
-          <Reveal>
-            <span className="block text-eyebrow text-muted uppercase">
-              {project.year} · {project.role}
-            </span>
-          </Reveal>
-
           <h1
-            className="mt-3 font-display text-h2 font-semibold"
+            className="font-display text-h2 font-semibold"
             style={{
-              viewTransitionName: projectTitleViewTransitionName(
-                project.slug,
-              ),
+              viewTransitionName: projectTitleViewTransitionName(project.slug),
             }}
           >
             {project.title}
@@ -181,15 +172,14 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                   Live
                 </dt>
                 <dd className="mt-1">
-                  <a
+                  <CtaLink
                     href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium text-accent transition-opacity hover:opacity-70"
+                    variant="secondary"
+                    size="sm"
+                    external
                   >
-                    Visit site ↗
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
+                    Visit site
+                  </CtaLink>
                 </dd>
               </div>
             )}
